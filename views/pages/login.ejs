@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login</title>
+    <link rel="stylesheet" href="/css/generic.css">
+    <link rel="stylesheet" href="/css/login.css">
+</head>
+
+<body>
+
+    <div class="login-container">
+        <div class="login-box">
+            <h1>Login</h1>
+
+            <div id="emailForm" class="form-section">
+                <form id="emailFormElement">
+                    <div class="form-group">
+                        <input type="email" id="email" name="email" placeholder=" " required>
+                        <label for="email">Email Address</label>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Next</button>
+                </form>
+                <p class="form-message" id="emailMessage"></p>
+            </div>
+
+            <div id="otpForm" class="form-section hidden">
+                <form id="otpFormElement">
+                    <p class="info-text">Enter the 6-digit OTP sent to <strong id="displayEmail"></strong></p>
+
+                    <div class="form-group">
+                        <input type="text" id="otp" name="otp" placeholder=" " maxlength="6" pattern="[0-9]{6}"
+                            required>
+                        <label for="otp">Enter code</label>
+                    </div>
+
+                    <div class="button-group">
+                        <button type="button" class="btn btn-secondary" id="backBtn">Back</button>
+                        <button type="submit" class="btn btn-primary">Verify</button>
+                    </div>
+                </form>
+
+                <div class="resend-section">
+                    <p class="form-message" id="otpMessage"></p>
+                    <div class="timer-container">
+                        <span id="resendTimer"></span>
+                        <button type="button" class="btn btn-link" id="resendBtn" disabled>Resend OTP</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    
+    <script src="/js/login.js"></script>
+</body>
+
+</html>

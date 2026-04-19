@@ -1,0 +1,161 @@
+/* General Layout Styling */
+:root {
+    --google-blue: #1a73e8;
+    --google-gray: #70757a;
+    --google-border: #dadce0;
+    --error-red: #d93025;
+}
+
+body {
+    background-color: #f0f2f5;
+    font-family: 'Roboto', arial, sans-serif;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+}
+
+.login-box {
+    background: #fff;
+    border: 1px solid var(--google-border);
+    border-radius: 8px;
+    padding: 48px 40px 36px;
+    width: 100%;
+    max-width: 450px;
+    box-sizing: border-box;
+    text-align: center;
+}
+
+h1 {
+    font-size: 24px;
+    font-weight: 400;
+    margin-bottom: 30px;
+    color: #202124;
+}
+
+/* --- Google Form Input Styling --- */
+
+.form-group {
+    position: relative;
+    margin-bottom: 25px;
+    text-align: left;
+}
+
+/* The Input Field */
+input[type="email"],
+input[type="text"] {
+    width: 100%;
+    padding: 13px 15px;
+    font-size: 16px;
+    border: 1px solid var(--google-border);
+    border-radius: 4px;
+    outline: none;
+    transition: border 0.2s;
+    box-sizing: border-box;
+    color: #202124;
+}
+
+/* Blue border on focus */
+input:focus {
+    border: 2px solid var(--google-blue);
+    padding: 12px 14px; /* Adjust padding to keep height consistent with thicker border */
+}
+
+/* Floating Label Logic */
+.form-group label {
+    position: absolute;
+    left: 12px;
+    top: 13px;
+    padding: 0 4px;
+    background-color: white;
+    color: var(--google-gray);
+    font-size: 16px;
+    transition: 0.2s ease all;
+    pointer-events: none;
+}
+
+/* Moves label up when input is focused or has content */
+input:focus + label,
+input:not(:placeholder-shown) + label {
+    top: -8px;
+    left: 10px;
+    font-size: 12px;
+    color: var(--google-blue);
+    font-weight: 500;
+}
+
+/* Reset placeholder to be invisible until needed */
+input::placeholder {
+    color: transparent;
+}
+
+input:focus::placeholder {
+    color: #bdc1c6;
+}
+
+/* --- Button Styling --- */
+
+.btn {
+    font-family: 'Google Sans', Roboto, Arial, sans-serif;
+    font-weight: 500;
+    padding: 10px 24px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 14px;
+    border: none;
+    transition: background 0.2s;
+}
+
+.btn-primary {
+    background-color: var(--google-blue);
+    color: white;
+    float: right; /* Google usually aligns the primary action to the right */
+}
+
+.btn-primary:hover {
+    background-color: #185abc;
+    box-shadow: 0 1px 2px 0 rgba(60,64,67,0.3), 0 1px 3px 1px rgba(60,64,67,0.15);
+}
+
+.btn-secondary {
+    background-color: transparent;
+    color: var(--google-blue);
+    float: left;
+}
+
+.btn-secondary:hover {
+    background-color: #f6fafe;
+}
+
+/* --- Utilities --- */
+
+.hidden {
+    display: none;
+}
+
+.info-text {
+    font-size: 14px;
+    color: #202124;
+    margin-bottom: 25px;
+}
+
+.resend-section {
+    margin-top: 40px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    clear: both;
+}
+
+.btn-link {
+    background: none;
+    color: var(--google-blue);
+    padding: 0;
+    font-size: 14px;
+}
+
+.btn-link:disabled {
+    color: var(--google-gray);
+    cursor: default;
+}

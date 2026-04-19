@@ -1,4 +1,4 @@
-import { Verification_Email_Template, Welcome_Email_Template, Account_Deletion_OTP_Template } from "../libs/EmailTemplate.js";
+
 import { transporter } from "./Email.config.js"
 export const SendVerificationCode = async (email, verificationCode) => {
     try {
