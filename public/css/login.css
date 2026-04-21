@@ -12,6 +12,7 @@ body {
     display: flex;
     justify-content: center;
     align-items: center;
+    flex-direction: column;
     height: 100dvh;
     margin: 0;
 }
@@ -108,11 +109,12 @@ input:focus::placeholder {
     transition: background 0.2s;
 }
 
+
 .btn-primary {
     background-color: var(--google-blue);
     color: white;
     float: right;
-   
+
 }
 
 .btn-primary:hover {
@@ -205,4 +207,18 @@ input:focus::placeholder {
 
 .form-section {
     justify-content: space-around;
+}
+
+.login-container {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-bottom: 2px solid var(--google-border);
+    padding: 4rem 0;
+}
+
+p{
+    padding: 0.8rem 0 ;
+    color: var(--google-gray);
 }
