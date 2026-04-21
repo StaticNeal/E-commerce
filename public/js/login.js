@@ -16,6 +16,8 @@ const displayEmail = document.getElementById('displayEmail');
 const backBtn = document.getElementById('backBtn');
 const resendBtn = document.getElementById('resendBtn');
 const resendTimer = document.getElementById('resendTimer');
+const emailSubmitBtn = emailFormElement.querySelector('button[type="submit"]');
+const otpSubmitBtn = otpFormElement.querySelector('button[type="submit"]');
 
 let currentEmail = '';
 let resendCooldown = 0;
@@ -36,6 +38,8 @@ emailFormElement.addEventListener('submit', async (e) => {
 // Request OTP
 async function requestOTP(email) {
     try {
+        emailSubmitBtn.disabled = true;
+        emailSubmitBtn.innerHTML = 'Sending...';
         emailMessage.textContent = 'Sending OTP...';
         emailMessage.className = 'form-message loading';
 
@@ -58,13 +62,16 @@ async function requestOTP(email) {
                 emailForm.classList.add('hidden');
                 otpForm.classList.remove('hidden');
                 otpInput.focus();
-                startResendCooldown();
             }, 1000);
         } else {
+            emailSubmitBtn.disabled = false;
+            emailSubmitBtn.innerHTML = 'Next';
             showEmailMessage(data.message || 'Failed to send OTP', 'error');
         }
     } catch (error) {
         console.error('Request OTP Error:', error);
+        emailSubmitBtn.disabled = false;
+        emailSubmitBtn.innerHTML = 'Next';
         showEmailMessage('Error sending OTP. Please try again.', 'error');
     }
 }
@@ -85,6 +92,8 @@ otpFormElement.addEventListener('submit', async (e) => {
 // Verify OTP
 async function verifyOTP(email, otp) {
     try {
+        otpSubmitBtn.disabled = true;
+        otpSubmitBtn.innerHTML = 'Verifying...';
         otpMessage.textContent = 'Verifying OTP...';
         otpMessage.className = 'form-message loading';
 
@@ -111,10 +120,14 @@ async function verifyOTP(email, otp) {
                 window.location.href = '/';
             }, 1500);
         } else {
+            otpSubmitBtn.disabled = false;
+            otpSubmitBtn.innerHTML = 'Verify';
             showOTPMessage(data.message || 'Invalid OTP', 'error');
         }
     } catch (error) {
         console.error('Verify OTP Error:', error);
+        otpSubmitBtn.disabled = false;
+        otpSubmitBtn.innerHTML = 'Verify';
         showOTPMessage('Error verifying OTP. Please try again.', 'error');
     }
 }
@@ -123,9 +136,13 @@ async function verifyOTP(email, otp) {
 backBtn.addEventListener('click', () => {
     otpForm.classList.add('hidden');
     emailForm.classList.remove('hidden');
+    otpInput.value = '';
+    emailInput.value = '';
     emailInput.focus();
     emailMessage.textContent = '';
+    emailMessage.className = 'form-message';
     otpMessage.textContent = '';
+    otpMessage.className = 'form-message';
 });
 
 // Resend OTP Button

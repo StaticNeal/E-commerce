@@ -13,20 +13,23 @@
 
     <div class="login-container">
         <div class="login-box">
-            <h1>Login</h1>
+
 
             <div id="emailForm" class="form-section">
+                <h1>Login or Create Account</h1>
                 <form id="emailFormElement">
                     <div class="form-group">
                         <input type="email" id="email" name="email" placeholder=" " required>
                         <label for="email">Email Address</label>
                     </div>
+                    <p class="form-message" id="emailMessage"></p>
                     <button type="submit" class="btn btn-primary">Next</button>
                 </form>
-                <p class="form-message" id="emailMessage"></p>
+
             </div>
 
             <div id="otpForm" class="form-section hidden">
+                <h1>Verify Email</h1>
                 <form id="otpFormElement">
                     <p class="info-text">Enter the 6-digit OTP sent to <strong id="displayEmail"></strong></p>
 
@@ -53,7 +56,7 @@
         </div>
     </div>
 
-    
+
     <script src="/js/login.js"></script>
 </body>
 

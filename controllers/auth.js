@@ -1,3 +1,4 @@
+import jwt from 'jsonwebtoken';
 import userModel from '../models/user.js';
 import { SendVerificationCode, WelcomeEmail } from '../middleware/Email.js';
 
@@ -28,35 +29,25 @@ export const requestLoginOTP = async (req, res) => {
         }
 
         const normalizedEmail = email.toLowerCase();
+        
+        // Find existing user by email (regardless of verification status)
         let user = await userModel.findOne({ email: normalizedEmail });
 
-        
-        const COOLDOWN = 60 * 1000;
-        if (user && user.lastOTPSentAt && Date.now() - user.lastOTPSentAt.getTime() < COOLDOWN) {
-            const remaining = Math.ceil((COOLDOWN - (Date.now() - user.lastOTPSentAt.getTime())) / 1000);
-            return res.status(429).json({
-                success: false,
-                message: `Wait ${remaining}s before requesting another OTP`
-            });
-        }
-
-        
+        // Generate OTP
         const otp = Math.floor(100000 + Math.random() * 900000).toString();
-        const otpExpiry = new Date(Date.now() + 10 * 60 * 1000); 
+        const otpExpiry = new Date(Date.now() + 10 * 60 * 1000);
 
         if (!user) {
-            
+            // Create new user only if email doesn't exist
             user = new userModel({
                 email: normalizedEmail,
                 otp: otp,
-                otpExpires: otpExpiry,
-                lastOTPSentAt: new Date()
+                otpExpires: otpExpiry
             });
         } else {
-            
+            // Allow verified users to login again - update OTP for both new and verified users
             user.otp = otp;
             user.otpExpires = otpExpiry;
-            user.lastOTPSentAt = new Date();
         }
 
         await user.save();
@@ -112,6 +103,21 @@ export const verifyLoginOTP = async (req, res) => {
         user.otpExpires = undefined;
         user.lastLogin = new Date();
         await user.save();
+
+        
+        const token = jwt.sign(
+            { id: user._id, email: user.email },
+            process.env.JWT_SECRET || 'your-secret-key',
+            { expiresIn: '7d' }
+        );
+
+        
+        res.cookie('token', token, {
+            httpOnly: true,
+            secure: process.env.NODE_ENV === 'production',
+            sameSite: 'strict',
+            maxAge: 7 * 24 * 60 * 60 * 1000 // 7 days
+        });
 
         
         await WelcomeEmail(user.email, user.name || 'User');

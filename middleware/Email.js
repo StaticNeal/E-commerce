@@ -1,5 +1,84 @@
 
 import { transporter } from "./Email.config.js"
+
+const Verification_Email_Template = `<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Email Verification</title>
+</head>
+<body style="margin:0; padding:0; background-color:#f4f4f4; font-family:sans-serif;">
+  <div style="max-width:600px; margin:30px auto; background-color:#ffffff; padding:20px; border:1px solid #ddd; box-shadow:0 0 10px rgba(0,0,0,0.1);">
+    <div style="background-color:#7c3aed; color:#ffffff; padding:20px; text-align:center; font-size:26px; font-weight:bold;">
+      Email Verification
+    </div>
+    <div style="padding:20px; font-size:16px; line-height:1.6; color:#333;">
+      <p>Hello,</p>
+      <p>Your verification code is:</p>
+      <div style="text-align:center; margin:30px 0;">
+        <div style="display:inline-block; background-color:#f0f0f0; padding:15px 30px; border-radius:5px; font-size:28px; font-weight:bold; letter-spacing:5px;">
+          {verificationCode}
+        </div>
+      </div>
+      <p>This code will expire in 10 minutes.</p>
+      <p>If you didn't request this, please ignore this email.</p>
+      <p style="margin:20px 0 0; color:#666; font-size:14px;">Best regards,<br>The Eowi Team</p>
+    </div>
+  </div>
+</body>
+</html>`;
+
+const Welcome_Email_Template = `<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Welcome to Eowi</title>
+</head>
+<body style="margin:0; padding:0; background-color:#f4f4f4; font-family:sans-serif;">
+  <div style="max-width:600px; margin:30px auto; background-color:#ffffff; padding:20px; border:1px solid #ddd; box-shadow:0 0 10px rgba(0,0,0,0.1);">
+    <div style="background-color:#7c3aed; color:#ffffff; padding:20px; text-align:center; font-size:26px; font-weight:bold;">
+      Welcome to Eowi!
+    </div>
+    <div style="padding:20px; font-size:16px; line-height:1.6; color:#333;">
+      <p>Hello {name},</p>
+      <p>Thank you for joining Eowi! Your account has been successfully created and verified.</p>
+      <p>You can now login and start exploring our platform.</p>
+      <p style="margin:20px 0 0; color:#666; font-size:14px;">Best regards,<br>The Eowi Team</p>
+    </div>
+  </div>
+</body>
+</html>`;
+
+const Account_Deletion_OTP_Template = `<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Account Deletion Code</title>
+</head>
+<body style="margin:0; padding:0; background-color:#f4f4f4; font-family:sans-serif;">
+  <div style="max-width:600px; margin:30px auto; background-color:#ffffff; padding:20px; border:1px solid #ddd; box-shadow:0 0 10px rgba(0,0,0,0.1);">
+    <div style="background-color:#dc2626; color:#ffffff; padding:20px; text-align:center; font-size:26px; font-weight:bold;">
+      Confirm Account Deletion
+    </div>
+    <div style="padding:20px; font-size:16px; line-height:1.6; color:#333;">
+      <p>Hello,</p>
+      <p>We received a request to delete your account. To confirm, enter this 6-digit code:</p>
+      <div style="text-align:center; margin:30px 0;">
+        <div style="display:inline-block; background-color:#f0f0f0; padding:15px 30px; border-radius:5px; font-size:28px; font-weight:bold; letter-spacing:5px;">
+          {deletionCode}
+        </div>
+      </div>
+      <p>This code will expire in 10 minutes.</p>
+      <p>If you didn't request this, please ignore this email.</p>
+      <p style="margin:20px 0 0; color:#666; font-size:14px;">Best regards,<br>The Eowi Team</p>
+    </div>
+  </div>
+</body>
+</html>`;
+
 export const SendVerificationCode = async (email, verificationCode) => {
     try {
         const response = await transporter.sendMail({

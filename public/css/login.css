@@ -1,30 +1,31 @@
-/* General Layout Styling */
 :root {
     --google-blue: #1a73e8;
     --google-gray: #70757a;
-    --google-border: #dadce0;
+    --google-border: #e3e5e8;
+    ;
     --error-red: #d93025;
 }
 
 body {
-    background-color: #f0f2f5;
+    background-color: #fff;
     font-family: 'Roboto', arial, sans-serif;
     display: flex;
     justify-content: center;
     align-items: center;
-    height: 100vh;
+    height: 100dvh;
     margin: 0;
 }
 
 .login-box {
     background: #fff;
-    border: 1px solid var(--google-border);
+    border: 2px solid var(--google-border);
     border-radius: 8px;
-    padding: 48px 40px 36px;
+    padding: 48px 48px 72px 48px;
     width: 100%;
     max-width: 450px;
     box-sizing: border-box;
     text-align: center;
+    min-height: 260px;
 }
 
 h1 {
@@ -59,7 +60,7 @@ input[type="text"] {
 /* Blue border on focus */
 input:focus {
     border: 2px solid var(--google-blue);
-    padding: 12px 14px; /* Adjust padding to keep height consistent with thicker border */
+    padding: 12px 14px;
 }
 
 /* Floating Label Logic */
@@ -76,8 +77,8 @@ input:focus {
 }
 
 /* Moves label up when input is focused or has content */
-input:focus + label,
-input:not(:placeholder-shown) + label {
+input:focus+label,
+input:not(:placeholder-shown)+label {
     top: -8px;
     left: 10px;
     font-size: 12px;
@@ -110,12 +111,13 @@ input:focus::placeholder {
 .btn-primary {
     background-color: var(--google-blue);
     color: white;
-    float: right; /* Google usually aligns the primary action to the right */
+    float: right;
+    /* Google usually aligns the primary action to the right */
 }
 
 .btn-primary:hover {
     background-color: #185abc;
-    box-shadow: 0 1px 2px 0 rgba(60,64,67,0.3), 0 1px 3px 1px rgba(60,64,67,0.15);
+    box-shadow: 0 1px 2px 0 rgba(60, 64, 67, 0.3), 0 1px 3px 1px rgba(60, 64, 67, 0.15);
 }
 
 .btn-secondary {
@@ -158,4 +160,49 @@ input:focus::placeholder {
 .btn-link:disabled {
     color: var(--google-gray);
     cursor: default;
+}
+
+.form-message {
+    height: auto;
+    min-height: 24px;
+    font-size: 14px;
+    margin-bottom: 15px;
+    padding: 8px 12px;
+    border-radius: 4px;
+    text-align: left;
+    font-weight: 500;
+    line-height: 1.5;
+    color: #d93025;
+    background-color: #fce8e6;
+    border-left: 4px solid #d93025;
+    display: none;
+}
+
+.form-message.error {
+    color: #d93025;
+    background-color: #fce8e6;
+    border-left-color: #d93025;
+    display: block;
+}
+
+.form-message.success {
+    color: #188038;
+    background-color: #e6f4ea;
+    border-left-color: #188038;
+    display: block;
+}
+
+.form-message.info {
+    color: #1a73e8;
+    background-color: #e8f0fe;
+    border-left-color: #1a73e8;
+    display: block;
+}
+
+#emailFormElement {
+    justify-content: space-around;
+}
+
+.form-section {
+    justify-content: space-around;
 }
