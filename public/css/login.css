@@ -35,7 +35,7 @@ h1 {
     color: #202124;
 }
 
-/* --- Google Form Input Styling --- */
+
 
 .form-group {
     position: relative;
@@ -43,7 +43,7 @@ h1 {
     text-align: left;
 }
 
-/* The Input Field */
+
 input[type="email"],
 input[type="text"] {
     width: 100%;
@@ -57,13 +57,13 @@ input[type="text"] {
     color: #202124;
 }
 
-/* Blue border on focus */
+
 input:focus {
     border: 2px solid var(--google-blue);
     padding: 12px 14px;
 }
 
-/* Floating Label Logic */
+
 .form-group label {
     position: absolute;
     left: 12px;
@@ -76,7 +76,7 @@ input:focus {
     pointer-events: none;
 }
 
-/* Moves label up when input is focused or has content */
+
 input:focus+label,
 input:not(:placeholder-shown)+label {
     top: -8px;
@@ -86,7 +86,7 @@ input:not(:placeholder-shown)+label {
     font-weight: 500;
 }
 
-/* Reset placeholder to be invisible until needed */
+
 input::placeholder {
     color: transparent;
 }
@@ -95,7 +95,7 @@ input:focus::placeholder {
     color: #bdc1c6;
 }
 
-/* --- Button Styling --- */
+
 
 .btn {
     font-family: 'Google Sans', Roboto, Arial, sans-serif;
@@ -112,7 +112,7 @@ input:focus::placeholder {
     background-color: var(--google-blue);
     color: white;
     float: right;
-    /* Google usually aligns the primary action to the right */
+   
 }
 
 .btn-primary:hover {
@@ -130,7 +130,7 @@ input:focus::placeholder {
     background-color: #f6fafe;
 }
 
-/* --- Utilities --- */
+
 
 .hidden {
     display: none;
