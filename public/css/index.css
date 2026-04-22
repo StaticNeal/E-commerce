@@ -1,0 +1,20 @@
+.components{
+    height: calc(100% - 4rem);
+    width: 100%;
+    display: flex;
+}
+
+.products{
+    flex-grow: 1;
+    height: 100%;
+}
+
+.others{
+    width: 180px;
+    height: 100%;
+    border-left: 1px solid var(--border-color);
+}
+
+.hidden{
+    display: none;
+}
