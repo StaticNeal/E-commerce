@@ -145,31 +145,6 @@ backBtn.addEventListener('click', () => {
     otpMessage.className = 'form-message';
 });
 
-// Resend OTP Button
-resendBtn.addEventListener('click', () => {
-    if (resendCooldown === 0 && currentEmail) {
-        requestOTP(currentEmail);
-    }
-});
-
-// Start Resend Cooldown Timer
-function startResendCooldown() {
-    resendCooldown = 60;
-    resendBtn.disabled = true;
-    updateResendTimer();
-}
-
-// Update Resend Timer
-function updateResendTimer() {
-    if (resendCooldown > 0) {
-        resendTimer.textContent = `Resend in ${resendCooldown}s`;
-        resendCooldown--;
-        setTimeout(updateResendTimer, 1000);
-    } else {
-        resendBtn.disabled = false;
-        resendTimer.textContent = 'Ready to resend';
-    }
-}
 
 // Show Email Message
 function showEmailMessage(message, type) {
