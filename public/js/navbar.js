@@ -20,19 +20,14 @@ async function checkUserLogin() {
 function updateNavbarForLoggedInUser(user) {
     const loginBtn = document.querySelector('.login-btn');
     if (loginBtn) {
-        loginBtn.innerHTML = `
-            <div class="user-profile">
-                <span class="user-name">${user.name}</span>
-                <button class="logout-btn">Logout</button>
-            </div>
-        `;
-
-        // Add logout functionality
-        const logoutBtn = loginBtn.querySelector('.logout-btn');
-        logoutBtn.addEventListener('click', async (e) => {
-            e.preventDefault();
-            await logout();
-        });
+        // Check if user has set a username
+        if (user.username) {
+            // User is logged in and has a username - show username only
+            loginBtn.innerHTML = `<span class="user-name">${user.username}</span>`;
+        } else {
+            // User is logged in but didn't set a username - show link
+            loginBtn.innerHTML = `<a href="/login"><b> <i>Add Username <i><b/></a>`;
+        }
     }
 }
 
