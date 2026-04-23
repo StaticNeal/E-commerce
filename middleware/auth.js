@@ -30,6 +30,27 @@ export const verifyToken = (req, res, next) => {
     }
 };
 
+export const verifyPageAccess = (req, res, next) => {
+    try {
+        const token = req.cookies.token;
+
+        if (!token) {
+            return res.redirect('/login');
+        }
+
+        const decoded = verifyJWT(token);
+        
+        if (!decoded) {
+            return res.redirect('/login');
+        }
+
+        req.user = decoded;
+        next();
+    } catch (error) {
+        return res.redirect('/login');
+    }
+};
+
 export const logout = (req, res) => {
     try {
         res.clearCookie('token', getCookieOptions());

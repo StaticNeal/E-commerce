@@ -6,8 +6,8 @@ const router = express.Router();
 
 router.post('/auth/request-otp', requestLoginOTP);
 router.post('/auth/verify-otp', verifyLoginOTP);
-router.post('/auth/logout', logout);
-router.post('/auth/update-username', updateUsername);
+router.post('/auth/logout', verifyToken, logout);
+router.post('/auth/update-username', verifyToken, updateUsername);
 
 
 router.get('/auth/me', verifyToken, async (req, res) => {

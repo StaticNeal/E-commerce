@@ -1,4 +1,5 @@
 import express from 'express';
+import { verifyPageAccess } from '../middleware/auth.js';
 
 const router = express.Router();
 
@@ -17,9 +18,9 @@ router.get('/login', (req, res) => {
 });
 
 /**
- * GET /update-profile - Update profile page
+ * GET /update-profile - Update profile page (Protected - Login required)
  */
-router.get('/update-profile', (req, res) => {
+router.get('/update-profile', verifyPageAccess, (req, res) => {
     res.render('pages/updateUserdata', { title: 'Update Profile' });
 });
 
