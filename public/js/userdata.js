@@ -1,19 +1,11 @@
-/**
- * Profile Update Handler
- * Manages user profile updates (username)
- */
 
-// Get DOM elements
 const usernameForm = document.getElementById('usernameFormElement');
 const usernameInput = document.getElementById('username');
 const usernameMessage = document.getElementById('usernameMessage');
 
-// Store current user email
+
 let currentUserEmail = '';
 
-/**
- * Load current user data when page loads
- */
 async function loadUserData() {
     try {
         const response = await fetch('/api/auth/me', {
@@ -39,11 +31,9 @@ async function loadUserData() {
         if (data.success) {
             currentUserEmail = data.user.email;
             usernameInput.value = '';
-            console.log('User loaded:', data.user.email);
-            showMessage('Logged in as: ' + data.user.email, 'info');
+          
         }
     } catch (error) {
-        console.error('Error loading user data:', error);
         showMessage('Error loading profile data', 'error');
     }
 }
@@ -63,20 +53,17 @@ function validateUsername(username) {
     if (username.length > 50) {
         return 'Username must not exceed 50 characters';
     }
-
     return null;
 }
 
 /**
- * Show message to user
- * @param {string} message - Message to display
- * @param {string} type - Message type: 'success', 'error', 'info'
+ * @param {string} message 
+ * @param {string} type
  */
 function showMessage(message, type = 'info') {
     usernameMessage.textContent = message;
     usernameMessage.className = `form-message ${type}`;
 
-    // Auto-clear success messages after 3 seconds
     if (type === 'success') {
         setTimeout(() => {
             usernameMessage.textContent = '';
@@ -85,27 +72,25 @@ function showMessage(message, type = 'info') {
     }
 }
 
-/**
- * Update username via API
- */
+
 async function updateProfileUsername() {
     const username = usernameInput.value.trim();
 
-    // Validate username
+    
     const validationError = validateUsername(username);
     if (validationError) {
         showMessage(validationError, 'error');
         return;
     }
 
-    // Check if user is logged in
+    
     if (!currentUserEmail) {
         showMessage('Please login first', 'error');
         return;
     }
 
     try {
-        // Show loading state
+        
         const submitButton = usernameForm.querySelector('button[type="submit"]');
         const originalButtonText = submitButton.textContent;
         submitButton.textContent = 'Updating...';
@@ -124,10 +109,8 @@ async function updateProfileUsername() {
         });
 
         const data = await response.json();
-        console.log('Update response:', data);
 
         if (data.success) {
-            console.log('Username updated for:', currentUserEmail);
             showMessage('Username updated successfully!', 'success');
             usernameInput.value = '';
             window.location.href = '/';
@@ -135,10 +118,9 @@ async function updateProfileUsername() {
             showMessage(data.message || 'Failed to update username', 'error');
         }
     } catch (error) {
-        console.error('Error updating username:', error);
         showMessage('Error updating username. Please try again.', 'error');
     } finally {
-        // Restore button state
+        
         const submitButton = usernameForm.querySelector('button[type="submit"]');
         submitButton.textContent = "Update";
         submitButton.disabled = false;
