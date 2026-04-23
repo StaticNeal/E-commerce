@@ -4,29 +4,12 @@ import { verifyToken, logout } from '../middleware/auth.js';
 
 const router = express.Router();
 
-/**
- * POST /api/auth/request-otp - Request OTP for login
- */
 router.post('/auth/request-otp', requestLoginOTP);
-
-/**
- * POST /api/auth/verify-otp - Verify OTP and login
- */
 router.post('/auth/verify-otp', verifyLoginOTP);
-
-/**
- * POST /api/auth/logout - Logout user
- */
 router.post('/auth/logout', logout);
-
-/**
- * POST /api/auth/update-username - Update username
- */
 router.post('/auth/update-username', updateUsername);
 
-/**
- * GET /api/auth/me - Get current user profile (protected)
- */
+
 router.get('/auth/me', verifyToken, async (req, res) => {
     try {
         const userModel = (await import('../models/user.js')).default;
@@ -44,7 +27,8 @@ router.get('/auth/me', verifyToken, async (req, res) => {
             user: {
                 id: user._id,
                 email: user.email,
-                name: user.name || 'User'
+                name: user.name || 'User',
+                username: user.username || null
             }
         });
     } catch (error) {
@@ -56,9 +40,7 @@ router.get('/auth/me', verifyToken, async (req, res) => {
     }
 });
 
-/**
- * GET /api/protected - Protected route example
- */
+
 router.get('/protected', verifyToken, (req, res) => {
     res.status(200).json({
         success: true,

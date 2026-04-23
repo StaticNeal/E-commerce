@@ -1,14 +1,23 @@
 // Check if user is logged in and update navbar
 async function checkUserLogin() {
     try {
-        const response = await fetch('/api/auth/me');
+        const response = await fetch('/api/auth/me', {
+            method: 'GET',
+            credentials: 'include',
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        });
         const data = await response.json();
+        console.log('Auth check response:', data);
 
         if (data.success && data.user) {
             // User is logged in
+            console.log('User logged in:', data.user.email);
             updateNavbarForLoggedInUser(data.user);
         } else {
             // User is not logged in
+            console.log('User not logged in');
             updateNavbarForLoggedOutUser();
         }
     } catch (error) {
@@ -20,14 +29,20 @@ async function checkUserLogin() {
 function updateNavbarForLoggedInUser(user) {
     const loginBtn = document.querySelector('.login-btn');
     if (loginBtn) {
-        // Check if user has set a username
         if (user.username) {
-            // User is logged in and has a username - show username only
+            // User has a username - show username
             loginBtn.innerHTML = `<span class="user-name">${user.username}</span>`;
+            console.log('✓ Showing username:', user.username);
+        } else if (user.name) {
+            // User has a name - show name
+            loginBtn.innerHTML = `<span class="user-name">${user.name}</span>`;
+            console.log('✓ Showing name:', user.name);
         } else {
-            // User is logged in but didn't set a username - show link
-            loginBtn.innerHTML = `<a href="/login"><b> <i>Add Username <i><b/></a>`;
+            // Show "Add Username" link
+            loginBtn.innerHTML = `<a href="/update-profile" class="add-username-link"><b>Add Username</b></a>`;
+            console.log('✓ Showing Add Username link');
         }
+        loginBtn.style.display = 'block';
     }
 }
 
@@ -35,25 +50,14 @@ function updateNavbarForLoggedOutUser() {
     const loginBtn = document.querySelector('.login-btn');
     if (loginBtn) {
         loginBtn.innerHTML = `<a href="/login">Login</a>`;
+        loginBtn.style.display = 'block';
+        console.log('✓ Showing Login button');
     }
 }
 
-async function logout() {
-    try {
-        const response = await fetch('/api/auth/logout', { method: 'POST' });
-        const data = await response.json();
-
-        if (data.success) {
-            // Redirect to home page
-            window.location.href = '/';
-        } else {
-            alert('Error logging out');
-        }
-    } catch (error) {
-        console.error('Logout error:', error);
-        alert('Error logging out');
-    }
+// Initialize navbar on page load
+if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', checkUserLogin);
+} else {
+    checkUserLogin();
 }
-
-// Check login status when page loads
-document.addEventListener('DOMContentLoaded', checkUserLogin);
