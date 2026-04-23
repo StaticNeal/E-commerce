@@ -1,4 +1,4 @@
-import jwt from 'jsonwebtoken';
+import { verifyJWT, getCookieOptions } from '../utils/helpers.js';
 
 export const verifyToken = (req, res, next) => {
     try {
@@ -11,30 +11,28 @@ export const verifyToken = (req, res, next) => {
             });
         }
 
-        const decoded = jwt.verify(token, process.env.JWT_SECRET || 'your-secret-key');
+        const decoded = verifyJWT(token);
+        
+        if (!decoded) {
+            return res.status(401).json({
+                success: false,
+                message: 'Invalid token. Please login again.'
+            });
+        }
+
         req.user = decoded;
         next();
     } catch (error) {
-        if (error.name === 'TokenExpiredError') {
-            return res.status(401).json({
-                success: false,
-                message: 'Token expired. Please login again.'
-            });
-        }
         return res.status(401).json({
             success: false,
-            message: 'Invalid token. Please login again.'
+            message: 'Token verification error. Please login again.'
         });
     }
 };
 
 export const logout = (req, res) => {
     try {
-        res.clearCookie('token', {
-            httpOnly: true,
-            secure: process.env.NODE_ENV === 'production',
-            sameSite: 'strict'
-        });
+        res.clearCookie('token', getCookieOptions());
 
         return res.status(200).json({
             success: true,

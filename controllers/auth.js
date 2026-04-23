@@ -1,18 +1,12 @@
-import jwt from 'jsonwebtoken';
 import userModel from '../models/user.js';
 import { SendVerificationCode, WelcomeEmail } from '../middleware/Email.js';
-
-
-const isValidEmail = (email) => {
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    return emailRegex.test(email);
-};
+import { isValidEmail } from '../utils/validators.js';
+import { generateOTP, getOTPExpiry, generateJWT, getCookieOptions } from '../utils/helpers.js';
 
 export const requestLoginOTP = async (req, res) => {
     try {
         const { email } = req.body;
 
-        
         if (!email) {
             return res.status(400).json({
                 success: false,
@@ -20,7 +14,6 @@ export const requestLoginOTP = async (req, res) => {
             });
         }
 
-        
         if (!isValidEmail(email)) {
             return res.status(400).json({
                 success: false,
@@ -29,13 +22,13 @@ export const requestLoginOTP = async (req, res) => {
         }
 
         const normalizedEmail = email.toLowerCase();
-        
+
         // Find existing user by email (regardless of verification status)
         let user = await userModel.findOne({ email: normalizedEmail });
 
         // Generate OTP
-        const otp = Math.floor(100000 + Math.random() * 900000).toString();
-        const otpExpiry = new Date(Date.now() + 10 * 60 * 1000);
+        const otp = generateOTP();
+        const otpExpiry = getOTPExpiry(10);
 
         if (!user) {
             // Create new user only if email doesn't exist
@@ -52,7 +45,6 @@ export const requestLoginOTP = async (req, res) => {
 
         await user.save();
 
-        
         await SendVerificationCode(user.email, otp);
 
         return res.status(200).json({
@@ -75,7 +67,6 @@ export const verifyLoginOTP = async (req, res) => {
     try {
         const { email, otp } = req.body;
 
-        
         if (!email || !otp) {
             return res.status(400).json({
                 success: false,
@@ -83,7 +74,6 @@ export const verifyLoginOTP = async (req, res) => {
             });
         }
 
-        
         const user = await userModel.findOne({
             email: email.toLowerCase(),
             otp: otp,
@@ -97,29 +87,16 @@ export const verifyLoginOTP = async (req, res) => {
             });
         }
 
-        
         user.isVerified = true;
         user.otp = undefined;
         user.otpExpires = undefined;
         user.lastLogin = new Date();
         await user.save();
 
-        
-        const token = jwt.sign(
-            { id: user._id, email: user.email },
-            process.env.JWT_SECRET || 'your-secret-key',
-            { expiresIn: '7d' }
-        );
+        const token = generateJWT({ id: user._id, email: user.email }, '7d');
 
-        
-        res.cookie('token', token, {
-            httpOnly: true,
-            secure: process.env.NODE_ENV === 'production',
-            sameSite: 'strict',
-            maxAge: 7 * 24 * 60 * 60 * 1000 // 7 days
-        });
+        res.cookie('token', token, getCookieOptions(7));
 
-        
         await WelcomeEmail(user.email, user.name || 'User');
 
         return res.status(200).json({
@@ -140,3 +117,46 @@ export const verifyLoginOTP = async (req, res) => {
         });
     }
 };
+
+export const updateUsername = async (req, res) => {
+    try {
+        const { email, username } = req.body;
+        if (!email) {
+            return res.status(400).json({
+                success: false,
+                message: 'Email is required'
+            });
+        }
+        if (!username) {
+            return res.status(400).json({
+                success: false,
+                message: 'Username is required'
+            });
+        }
+
+        const validEmail = email.toLowerCase();
+        const user = await userModel.findOne({ email: validEmail });
+
+        if (!user) {
+            return res.status(404).json({
+                success: false,
+                message: 'User not found'
+            });
+        }
+
+        user.username = username;
+        await user.save();
+
+        return res.status(200).json({
+            success: true,
+            message: 'Username updated successfully'
+        });
+
+    } catch (error) {
+        console.error('Update Username error:', error);
+        return res.status(500).json({
+            success: false,
+            message: 'Server error during username update'
+        });
+    }
+}
