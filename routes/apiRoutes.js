@@ -1,5 +1,5 @@
 import express from 'express';
-import { requestLoginOTP, verifyLoginOTP } from '../controllers/auth.js';
+import { requestLoginOTP, verifyLoginOTP, updateUsername } from '../controllers/auth.js';
 import { verifyToken, logout } from '../middleware/auth.js';
 
 const router = express.Router();
@@ -18,6 +18,11 @@ router.post('/auth/verify-otp', verifyLoginOTP);
  * POST /api/auth/logout - Logout user
  */
 router.post('/auth/logout', logout);
+
+/**
+ * POST /api/auth/update-username - Update username
+ */
+router.post('/auth/update-username', updateUsername);
 
 /**
  * GET /api/auth/me - Get current user profile (protected)

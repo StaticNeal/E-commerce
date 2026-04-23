@@ -67,12 +67,14 @@ export const verifyLoginOTP = async (req, res) => {
     try {
         const { email, otp } = req.body;
 
+
         if (!email || !otp) {
             return res.status(400).json({
                 success: false,
                 message: 'Email and OTP are required'
             });
         }
+
 
         const user = await userModel.findOne({
             email: email.toLowerCase(),
@@ -87,6 +89,7 @@ export const verifyLoginOTP = async (req, res) => {
             });
         }
 
+
         user.isVerified = true;
         user.otp = undefined;
         user.otpExpires = undefined;
@@ -97,7 +100,9 @@ export const verifyLoginOTP = async (req, res) => {
 
         res.cookie('token', token, getCookieOptions(7));
 
+
         await WelcomeEmail(user.email, user.name || 'User');
+        console.log(`✓ User logged in: ${user.email}`);
 
         return res.status(200).json({
             success: true,
@@ -146,6 +151,7 @@ export const updateUsername = async (req, res) => {
 
         user.username = username;
         await user.save();
+        console.log(`✓ Username updated for ${email}: ${username}`);
 
         return res.status(200).json({
             success: true,
