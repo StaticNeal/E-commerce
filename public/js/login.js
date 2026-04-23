@@ -117,7 +117,7 @@ async function verifyOTP(email, otp) {
 
             // Redirect to home page after 1.5 seconds
             setTimeout(() => {
-                window.location.href = '/';
+                window.location.href = '/update-profile';
             }, 1500);
         } else {
             otpSubmitBtn.disabled = false;

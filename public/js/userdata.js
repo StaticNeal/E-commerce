@@ -63,9 +63,7 @@ function validateUsername(username) {
     if (username.length > 50) {
         return 'Username must not exceed 50 characters';
     }
-    if (!/^[a-zA-Z0-9_-]+$/.test(username)) {
-        return 'Username can only contain letters, numbers, hyphens, and underscores';
-    }
+
     return null;
 }
 
@@ -132,6 +130,7 @@ async function updateProfileUsername() {
             console.log('Username updated for:', currentUserEmail);
             showMessage('Username updated successfully!', 'success');
             usernameInput.value = '';
+            window.location.href = '/';
         } else {
             showMessage(data.message || 'Failed to update username', 'error');
         }
@@ -146,9 +145,7 @@ async function updateProfileUsername() {
     }
 }
 
-/**
- * Initialize form event listener
- */
+
 if (usernameForm) {
     usernameForm.addEventListener('submit', (e) => {
         e.preventDefault();
@@ -156,7 +153,4 @@ if (usernameForm) {
     });
 }
 
-/**
- * Load user data when DOM is ready
- */
 document.addEventListener('DOMContentLoaded', loadUserData);
