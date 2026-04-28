@@ -17,11 +17,10 @@ const productSchema = new mongoose.Schema({
         type: String,
         required: true
     },
-    // images: {
-    //     type: Array,
-    //     default: [],
-    //     minLength: 1,
-    // },
+    images: {
+        type: Array,
+        default: [],
+    },
     createdAt: {
         type: Date,
         default: Date.now

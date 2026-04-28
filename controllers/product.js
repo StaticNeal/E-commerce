@@ -2,7 +2,7 @@ import product from "../models/product.js";
 
 export const createProduct = async (req, res) => {
     try {
-        const { name, description, price, category} = req.body;
+        const { name, description, price, category, images } = req.body;
         if (!name || !description || !price || !category) {
             return res.status(400).json({
                 success: false,
@@ -11,7 +11,7 @@ export const createProduct = async (req, res) => {
         }
 
         const newProduct = new product({
-            name, description, price, category, seller: req.user.id
+            name, description, price, category, images: images || [], seller: req.user.id
         });
         
         await newProduct.save();

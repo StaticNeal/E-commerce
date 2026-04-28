@@ -16,7 +16,7 @@ router.get('/update-profile', verifyPageAccess, (req, res) => {
     res.render('pages/updateUserdata', { title: 'Update Profile' });
 });
 
-router.get('/create-products', (req, res) => {
+router.get('/create-product', (req, res) => {
     res.render('pages/createproduct', { title: 'Create Product' });
 });
 export default router;
