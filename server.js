@@ -7,7 +7,7 @@ import { fileURLToPath } from 'url';
 import { connectDB } from './utils/dbConnection.js';
 import pageRoutes from './routes/pageRoutes.js';
 import apiRoutes from './routes/apiRoutes.js';
-
+import productRoutes from './routes/productRoutes.js';
 dotenv.config()
 
 const __filename = fileURLToPath(import.meta.url);
@@ -30,7 +30,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 // Routes
 app.use('/', pageRoutes);
 app.use('/api', apiRoutes);
-
+app.use('/products', productRoutes);
 // Start server
 const PORT = process.env.PORT || 5000;
 
