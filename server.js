@@ -31,7 +31,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use('/', pageRoutes);
 app.use('/api', apiRoutes);
 app.use('/products', productRoutes);
-// Start server
+
 const PORT = process.env.PORT || 5000;
 
 const startServer = async () => {
