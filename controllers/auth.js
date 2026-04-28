@@ -101,7 +101,7 @@ export const verifyLoginOTP = async (req, res) => {
         res.cookie('token', token, getCookieOptions(7));
 
 
-        await WelcomeEmail(user.email, user.name || 'User');
+        await WelcomeEmail(user.email, user.username || user.name || 'User');
         console.log(`✓ User logged in: ${user.email}`);
 
         return res.status(200).json({
@@ -139,6 +139,21 @@ export const updateUsername = async (req, res) => {
             });
         }
 
+        // Validate username
+        const trimmedUsername = username.trim();
+        if (trimmedUsername.length < 3) {
+            return res.status(400).json({
+                success: false,
+                message: 'Username must be at least 3 characters long'
+            });
+        }
+        if (trimmedUsername.length > 50) {
+            return res.status(400).json({
+                success: false,
+                message: 'Username must not exceed 50 characters'
+            });
+        }
+
         const validEmail = email.toLowerCase();
         const user = await userModel.findOne({ email: validEmail });
 
@@ -149,9 +164,9 @@ export const updateUsername = async (req, res) => {
             });
         }
 
-        user.username = username;
+        user.username = trimmedUsername;
         await user.save();
-        console.log(`✓ Username updated for ${email}: ${username}`);
+        console.log(`✓ Username updated for ${email}: ${trimmedUsername}`);
 
         return res.status(200).json({
             success: true,

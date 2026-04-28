@@ -1,4 +1,3 @@
-
 const usernameForm = document.getElementById('usernameFormElement');
 const usernameInput = document.getElementById('username');
 const usernameMessage = document.getElementById('usernameMessage');
@@ -30,7 +29,12 @@ async function loadUserData() {
         const data = await response.json();
         if (data.success) {
             currentUserEmail = data.user.email;
-            usernameInput.value = '';
+            // Display existing username if available
+            if (data.user.username) {
+                usernameInput.value = data.user.username;
+            } else {
+                usernameInput.value = '';
+            }
           
         }
     } catch (error) {

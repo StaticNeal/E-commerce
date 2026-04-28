@@ -27,8 +27,8 @@ router.get('/auth/me', verifyToken, async (req, res) => {
             user: {
                 id: user._id,
                 email: user.email,
-                name: user.name || 'User',
-                username: user.username || null
+                name: user.name || user.username || 'User',
+                username: user.username
             }
         });
     } catch (error) {

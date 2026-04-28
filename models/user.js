@@ -3,7 +3,11 @@ import mongoose, { model } from "mongoose";
 const userSchema = new mongoose.Schema({
     username: {
         type: String,
-        default: 'User'
+        default: null
+    },
+    name: {
+        type: String,
+        default: null
     },
     email: {
         type: String,
