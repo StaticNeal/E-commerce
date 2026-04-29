@@ -11,6 +11,10 @@ header {
     padding: 0.4rem 0.8rem;
     gap: 0.4rem;
     justify-content: space-between;
+    position: fixed;
+    top: 0;
+    left: 0;
+    background-color: #fff;
 }
 
 nav {

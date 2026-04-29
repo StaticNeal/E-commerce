@@ -1,0 +1,235 @@
+body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    height: 100dvh;
+    max-height: fit-content;
+}
+
+#product {
+    width: 100%;
+    height: fit-content;
+    display: flex;
+    max-width: 1200px;
+    border: 1px solid red;
+
+}
+
+.product-showcase {
+    width: 50%;
+    height: 100%;
+    padding: 1.6rem;
+}
+
+.product-descriptions {
+    width: 50%;
+    height: 100%;
+    padding: 1.6rem;
+
+}
+
+.product-descriptions .basic-details {
+    height: fit-content;
+    padding-bottom: 0.8rem;
+    border-bottom: 1px solid var(--google-border);
+}
+
+.product-descriptions .basic-details .product-name {
+    font-weight: 400;
+}
+
+.img-container {
+    background-size: contain;
+    width: 100%;
+    aspect-ratio: 1 / 1;
+}
+
+.img-container img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+}
+
+
+.rating {
+    display: flex;
+    align-items: center;
+    gap: 0.8rem;
+}
+
+.stars {
+    display: flex;
+    gap: 0.3rem;
+    font-size: 1.4rem;
+
+}
+
+.star {
+    cursor: pointer;
+    color: #d3d3d3;
+    transition: color 0.2s ease;
+    user-select: none;
+}
+
+.star:hover,
+.star.active {
+    color: #ffc107;
+}
+
+.rating-value {
+    font-weight: 600;
+    font-size: 0.95rem;
+}
+
+.rating-count {
+    font-size: 0.85rem;
+    color: #666;
+}
+
+.product-price {
+    font-size: 1.4rem;
+    font-weight: 500;
+    margin-top: 1.2rem;
+}
+
+.description {
+    padding: 0.8rem 0;
+    border-bottom: 1px solid var(--google-border);
+}
+
+.varients {
+    height: fit-content;
+    width: fit-content;
+    display: flex;
+    padding: 0.8rem;
+    align-items: flex-start;
+    gap: 0.8rem;
+    border-bottom: 1px solid var(--google-border);
+    max-width: 40vw;
+
+}
+
+.varients h3 {
+    font-weight: 500;
+    margin-top: 5px;
+}
+
+.varient-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.8rem;
+    list-style: none;
+    overflow: auto;
+    padding: 0.8rem;
+    max-height: 30dvh;
+    scrollbar-width: thin;
+}
+
+.varient-list .varient-img {
+
+    height: 100px;
+    aspect-ratio: 1 / 1;
+    border: 1px solid var(--google-border);
+    flex-shrink: 0;
+    cursor: pointer;
+}
+
+.varient-list .varient-img img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+}
+
+.quantity {
+    padding: 0.8rem 0;
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 1.6rem;
+}
+
+.quantity .wrapper {
+    display: flex;
+    align-items: center;
+    gap: 0.8rem;
+}
+
+.quantity-controls {
+    display: flex;
+    align-items: center;
+    border: 1px solid var(--google-border);
+}
+
+.quantity-controls button {
+    width: 30px;
+    height: 30px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 1.2rem;
+    font-weight: 600;
+    border: 1px solid var(--google-border);
+    background-color: rgb(248, 248, 240);
+    cursor: pointer;
+}
+
+.quantity-value {
+    width: 60px;
+    height: 100%;
+    text-align: center;
+    align-content: center;
+}
+
+.quantity .price {
+    text-align: center;
+    align-content: center;
+    padding: 0 0.4rem;
+}
+
+.other-details .buttons {
+    width: 100%;
+    display: flex;
+    gap: 0.8rem;
+    flex-wrap: wrap;
+}
+
+.buttons .buy-now-btn,
+.buttons .add-to-cart-btn {
+    border: 1px solid red;
+    width: calc(50% - 0.4rem);
+}
+
+.buttons .add-to-wishlist-btn {
+    width: 100%;
+}
+
+.buttons .add-to-wishlist-btn,
+.buttons .add-to-cart-btn,
+.buttons .buy-now-btn {
+    padding: 0.8rem;
+    font-weight: 500;
+    cursor: pointer;
+    border: 1px solid var(--google-border);
+    background-color: rgb(248, 248, 240);
+}
+
+
+
+.other-product-pictures {
+    height: fit-content;
+    width: 100%;
+    flex-wrap: wrap;
+    display: flex;
+    gap: 0.4rem;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.other-product-pictures img {
+    height: 120px;
+    aspect-ratio: 1 / 1;
+    object-fit: contain;
+    border: 1px solid var(--google-border);
+    cursor: pointer;
+}

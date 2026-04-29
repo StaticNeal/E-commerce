@@ -7,15 +7,95 @@
     <title>Document</title>
 
     <link rel="stylesheet" href="/css/generic.css">
-      <link rel="stylesheet" href="/css/createProduct.css">
+    <link rel="stylesheet" href="/css/createProduct.css">
+    <link rel="stylesheet" href="/css/index.css">
 </head>
 
 <body>
-    <h1>this is crate product page
+    <%- include('../components/navbar') %>
+        <div class="components">
+            <div class="products"></div>
+            <div class="others">
+                <%- include('../components/cart') %>
+                    <%- include('../components/settings') %>
+            </div>
+        </div>
+        <main class="wrapper-of-all">
+            <div id="product">
+                <div class="product-showcase">
+                    <div class="img-container"><img src="/tempimages/vasebrown(1).png" alt=""></div>
+                    <div class="other-product-pictures">
+                        <img src="/tempimages/vasewhite(1).png" alt="">
+                        <img src="/tempimages/vasewhite(2).png" alt="">
+                        <img src="/tempimages/vasewhite(3).png" alt="">
+                        <img src="/tempimages/vasewhite(4).png" alt="">
+                    </div>
+                </div>
+                <div class="product-descriptions">
+                    <div class="wrapper-top">
 
-    </h1>
+                        <div class="basic-details">
+                            <h1 class="product-name">Product Name</h1>
+                            <div class="rating">
+                                <div class="stars">
+                                    <span class="star" data-value="1">★</span>
+                                    <span class="star" data-value="2">★</span>
+                                    <span class="star" data-value="3">★</span>
+                                    <span class="star" data-value="4">★</span>
+                                    <span class="star" data-value="5">★</span>
+                                </div>
+                                <span class="rating-count">(0 reviews)</span>
+                            </div>
+                            <div class="product-price">$ 99.9</div>
+                        </div>
 
-    <script src="/js/createProduct.js" defer></script>
+                        <p class="description">Lorem ipsum dolor sit amet consectetur adipisicing elit. Soluta libero
+                            quaerat
+                            officiis quis, impedit magnam rerum aliquid esse totam dolorum deserunt odio numquam iste
+                            dolorem
+                            nulla
+                            nesciunt, hic, earum minus nemo. Quas repellat voluptas officiis.</p>
+                        <div class="variants">
+                            <h3>Varitents:</h3>
+
+                            <ul class="varient-list">
+                                <li class="varient-img"><img src="tempimages/vasebrown(1).png" alt=""></li>
+                                <li class="varient-img"><img src="tempimages/vasewhite(2).png" alt=""></li>
+                            </ul>
+
+                        </div>
+                    </div>
+                    <div class="other-details">
+                        <div class="quantity">
+                            <div class="wrapper">
+                                <h3>Quantity:</h3>
+
+                                <div class="quantity-controls">
+                                    <button class="quantity-decrease-btn">-</button>
+                                    <div class="quantity-value">1</div>
+                                    <button class="quantity-increase-btn">+</button>
+                                </div>
+                            </div>
+
+                            <div class="price">$ 99.9</div>
+                        </div>
+                        <div class="buttons">
+                            <button class="buy-now-btn">Buy Now</button>
+                            <button class="add-to-cart-btn">Add to Cart</button>
+                            <button class="add-to-wishlist-btn">Add to Wishlist</button>
+                        </div>
+
+                        <div class="social-links"></div>
+                    </div>
+                </div>
+            </div>
+           
+        </main>
+
+
+        <script src="/js/createProduct.js" defer></script>
+        <script src="/js/sidebar.js" defer></script>
+
 
 </body>
 

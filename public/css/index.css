@@ -2,6 +2,10 @@
     height: calc(100% - 4rem);
     width: 100%;
     display: flex;
+    position: fixed;
+    right: 0;
+    bottom: 0;
+  
 }
 
 .products {
@@ -13,6 +17,7 @@
     width: 280px;
     height: 100%;
     border-left: 1px solid var(--border-color);
+    background-color: #fff;
 }
 
 .hidden {
