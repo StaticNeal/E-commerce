@@ -2,7 +2,7 @@
     height: calc(100% - 4rem);
     width: 100%;
     display: flex;
-    position: fixed;
+    /* position: fixed; */
     right: 0;
     bottom: 0;
   
@@ -18,6 +18,9 @@
     height: 100%;
     border-left: 1px solid var(--border-color);
     background-color: #fff;
+    position: fixed;
+    right: 0;
+    top: 4rem;
 }
 
 .hidden {
