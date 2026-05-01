@@ -4,7 +4,15 @@ import { verifyPageAccess } from '../middleware/auth.js';
 const router = express.Router();
 
 router.get('/', (req, res) => {
-    res.render('pages/index', { title: 'Home' });
+    const userAgent = req.headers['user-agent'];
+    
+    if (/mobile|android|iphone/i.test(userAgent)) {
+        
+        res.render('pages/mobile/index', { title: 'Home' });  
+    } else {
+        
+        res.render('pages/desktop/index', { title: 'Home' });
+    }
 });
 
 router.get('/login', (req, res) => {
@@ -17,6 +25,14 @@ router.get('/update-profile', verifyPageAccess, (req, res) => {
 });
 
 router.get('/create-product', (req, res) => {
-    res.render('pages/createproduct', { title: 'Create Product' });
+    const userAgent = req.headers['user-agent'];
+    
+    if (/mobile|android|iphone/i.test(userAgent)) {
+        
+        res.render('pages/mobile/createproduct', { title: 'Create-product' });  
+    } else {
+        
+        res.render('pages/desktop/createproduct', { title: 'Create-product' });
+    }
 });
 export default router;
