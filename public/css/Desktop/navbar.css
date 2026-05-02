@@ -15,11 +15,13 @@ header {
     top: 0;
     left: 0;
     background-color: #fff;
+    z-index: 5;
 }
 
 nav {
     height: 70%;
     width: 70%;
+    z-index: 5;
 }
 
 button {
@@ -50,7 +52,7 @@ a {
     width: 100%;
     height: 2rem;
     border: none;
-    border-radius: 6px 0px 0px 6px  ;
+    border-radius: 6px 0px 0px 6px;
     padding: 0.4rem;
     font-size: 100%;
 }
@@ -62,7 +64,7 @@ a {
 
 #search-bar:active {
     outline: none;
-    border: 1px solid  #212121;
+    border: 1px solid #212121;
 }
 
 .links-and-buttons {
@@ -119,4 +121,26 @@ a {
 
 .add-username-link:hover {
     background-color: #f1f3f4;
+}
+
+@media screen and (max-width: 768px) {
+
+    .links-and-buttons {
+        display: flex;
+        position: fixed;
+        bottom: 0;
+        left: 0;
+        align-items: center;
+        gap: 0.8rem;
+        border: 1px solid var(--border-color);
+        width: 100%;
+        padding: 0.8rem;
+        z-index: 10;
+        background-color: #fff;
+    }
+
+    nav {
+        height: 70%;
+        width: 100%;
+    }
 }
