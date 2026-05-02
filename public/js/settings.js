@@ -1,10 +1,4 @@
 
-/**
- * Toggle visibility of menu items based on login status
- * Shows:
- * - .for-logged elements only to logged-in users
- * - .for-not-logged elements only to non-logged-in users
- */
 async function updateSettingsVisibility() {
     try {
         const response = await fetch('/api/auth/me', {

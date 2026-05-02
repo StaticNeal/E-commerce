@@ -23,6 +23,21 @@
         </div>
 
         <script src="/js/sidebar.js" defer></script>
+        <script>
+            if (document.readyState === 'loading') {
+                document.addEventListener('DOMContentLoaded', () => {
+                    const homeBtn = document.querySelector('.home-btn');
+                    if (homeBtn) {
+                        homeBtn.classList.add('active-menu-item');
+                    }
+                });
+            } else {
+                const homeBtn = document.querySelector('.home-btn');
+                if (homeBtn) {
+                    homeBtn.classList.add('active-menu-item');
+                }
+            }
+        </script>
 
 </body>
 

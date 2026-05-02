@@ -219,3 +219,32 @@ p{
     padding: 0.8rem 0 ;
     color: var(--google-gray);
 }
+
+@media screen and (max-width: 480px) {
+    .login-box {
+        padding: 32px 24px 48px 24px;
+    }
+
+    h1 {
+        font-size: 20px;
+    }
+
+    .btn {
+        width: 100%;
+        padding: 12px;
+        font-size: 16px;
+    }
+
+    .resend-section {
+        flex-direction: column;
+        gap: 15px;
+    }
+
+    .btn-primary, .btn-secondary {
+        float: none;
+    }
+
+    .login-box{
+        width: 90%;
+    }
+}
