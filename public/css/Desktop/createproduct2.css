@@ -33,6 +33,17 @@
     background-size: contain;
     max-width: 600px;
     cursor: pointer;
+    border: 6px dashed #666;
+    border-radius: 16px;
+}
+
+#product-hero-img-wrapper:hover {
+    border: 6px dashed #e3e4a7;
+}
+
+#product-hero-img-wrapper:active, #product-hero-img-wrapper:focus {
+    outline: none;
+    border: 8px dashed #f2f39d;
 }
 
 #product-hero-img-wrapper img {
@@ -142,7 +153,7 @@
     gap: 0.8rem;
     border-bottom: 1px solid var(--google-border);
     position: relative;
-    
+
 }
 
 .variants h3 {
@@ -295,7 +306,8 @@
     cursor: pointer;
 }
 
-.other-details, .other-products{
+.other-details,
+.other-products {
     width: 100%;
     max-width: 1200px;
 }
