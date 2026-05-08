@@ -110,3 +110,15 @@ heroInput.addEventListener('change', function () {
         reader.readAsDataURL(file);
     }
 });
+
+const titleInput = document.getElementById('product-title');
+
+// Auto-adjust height on load
+function adjustHeight() {
+    titleInput.style.height = 'auto';
+    titleInput.style.height = titleInput.scrollHeight + 'px';
+}
+
+// Run on load and on every keystroke
+window.addEventListener('load', adjustHeight);
+titleInput.addEventListener('input', adjustHeight);

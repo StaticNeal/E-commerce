@@ -38,9 +38,11 @@
 
                     <div class="product-description">
                         <div class="basic-details">
-                            <h1 class="product-name">Lorem ipsum dolor sit amet consectetur, adipisicing elit. Veritatis
-                                nesciunt deleniti quaerat voluptatum repellat accusantium quis debitis sed, itaque
-                                voluptatem eaque, reiciendis quas magnam velit iusto accusamus modi ex ut?</h1>
+                            <div class="product-name-container">
+                                <textarea class="product-name-input" id="product-title"
+                                    placeholder="Enter product name..."
+                                    oninput="this.style.height = '';this.style.height = this.scrollHeight + 'px'"></textarea>
+                            </div>
                             <div class="rating">
                                 <div class="stars">
                                     <span class="star" data-value="1">★</span>

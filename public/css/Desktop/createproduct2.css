@@ -121,7 +121,36 @@
     padding-bottom: 0.8rem;
     border-bottom: 1px solid var(--google-border);
 }
+.product-name-container {
+    width: 100%;
+}
 
+.product-name-input {
+    width: 100%;
+    font-size: 1.5rem; /* Matches your H1 size */
+    font-weight: 700;
+    font-family: inherit;
+    border: 2px solid transparent; /* Hidden until hover/focus */
+    background: transparent;
+    color: #333;
+    resize: none; /* User can't manually drag it */
+    overflow: hidden;
+    padding: 0.4rem;
+    border-radius: 8px;
+    cursor: text;
+    transition: all 0.2s ease;
+}
+
+.product-name-input:hover {
+    border: 2px dashed #ccc;
+}
+
+.product-name-input:focus {
+    outline: none;
+    background: #fff;
+    border: 2px solid #006dc0; /* Google-style blue border when editing */
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+}
 .rating {
     display: flex;
     align-items: center;
