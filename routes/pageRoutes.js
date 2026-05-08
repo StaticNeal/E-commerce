@@ -5,12 +5,12 @@ const router = express.Router();
 
 router.get('/', (req, res) => {
     const userAgent = req.headers['user-agent'];
-    
+
     if (/mobile|android|iphone/i.test(userAgent)) {
-        
-        res.render('pages/mobile/index', { title: 'Home' });  
+
+        res.render('pages/mobile/index', { title: 'Home' });
     } else {
-        
+
         res.render('pages/desktop/index', { title: 'Home' });
     }
 });
@@ -26,13 +26,17 @@ router.get('/update-profile', verifyPageAccess, (req, res) => {
 
 router.get('/create-product', (req, res) => {
     const userAgent = req.headers['user-agent'];
-    
+
     if (/mobile|android|iphone/i.test(userAgent)) {
-        
-        res.render('pages/mobile/createproduct', { title: 'Create-product' });  
+
+        res.render('pages/mobile/createproduct', { title: 'Create-product' });
     } else {
-        
+
         res.render('pages/desktop/createproduct', { title: 'Create-product' });
     }
 });
+
+router.get('/make-product', (req, res) => {
+    res.render('pages/product-form')
+})
 export default router;

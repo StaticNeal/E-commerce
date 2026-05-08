@@ -7,6 +7,7 @@
     align-items: center;
     gap: 0.8rem;
     height: 100%;
+    padding: 1.6rem;
 }
 
 .wrapper-of-all {
@@ -20,11 +21,11 @@
 }
 
 #hero-product {
-    height: auto;
     /* ← Better than fit-content for flex */
     max-width: 1200px;
     display: flex;
     align-items: stretch;
+    height: auto;
 }
 
 #product-hero-img-wrapper {
@@ -35,21 +36,64 @@
     cursor: pointer;
     border: 6px dashed #666;
     border-radius: 16px;
+    /* padding: 0.8rem; */
+}
+
+#product-hero-img-wrapper {
+    width: 100%;
+    aspect-ratio: 1 / 1;
+    max-width: 600px;
+    cursor: pointer;
+    border: 6px dashed #666;
+    border-radius: 16px;
+
+    /* Center the preview image */
+    background-size: contain;
+    background-position: center;
+    background-repeat: no-repeat;
+
+    /* Hides the default "No file chosen" text */
+    color: transparent;
+    position: relative;
+    overflow: hidden;
+}
+
+/* Creating the "+" icon */
+#product-hero-img-wrapper::before {
+    content: "+";
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 80px;
+    color: #666;
+    font-weight: 300;
+    pointer-events: none;
+    /* Allows clicks to pass through to the input */
+}
+
+/* Hide the "+" when an image is uploaded */
+#product-hero-img-wrapper.has-image::before {
+    display: none;
 }
 
 #product-hero-img-wrapper:hover {
     border: 6px dashed #e3e4a7;
 }
 
-#product-hero-img-wrapper:active, #product-hero-img-wrapper:focus {
+#product-hero-img-wrapper.has-image {
+    border: none;
     outline: none;
-    border: 8px dashed #f2f39d;
 }
 
-#product-hero-img-wrapper img {
-    width: 100%;
-    height: 100%;
-    object-fit: contain;
+#product-hero-img-wrapper.has-image:hover {
+    filter: grayscale(0.3);
+}
+
+
+#product-hero-img-wrapper::-webkit-file-upload-button {
+    visibility: hidden;
+    display: none;
 }
 
 
@@ -59,7 +103,7 @@
     flex-wrap: wrap;
     display: flex;
     gap: 0.4rem;
-
+    flex-grow: grow;
 }
 
 .product-other-imgs-wrapper img {
@@ -128,7 +172,7 @@
     position: absolute;
     right: 30px;
     top: 20px;
-    z-index: 6;
+    z-index: 4;
     background: none;
     border: none;
     cursor: pointer;
@@ -268,7 +312,6 @@
 
 .buttons .buy-now-btn,
 .buttons .add-to-cart-btn {
-    border: 1px solid red;
     width: calc(50% - 0.4rem);
 }
 
@@ -302,7 +345,6 @@
     height: 120px;
     aspect-ratio: 1 / 1;
     object-fit: contain;
-    border: 1px solid var(--google-border);
     cursor: pointer;
 }
 
@@ -310,4 +352,59 @@
 .other-products {
     width: 100%;
     max-width: 1200px;
+}
+
+.product-other-imgs-wrapper {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+    justify-content: flex-start; /* Keeps everything pinned to the left */
+    width: 100%;
+    margin-top: 10px;
+}
+
+/* Base style for both the upload box and the images */
+.thumb-tile, .upload-tile {
+    width: 80px;
+    height: 80px;
+    border-radius: 8px;
+    position: relative;
+    flex-shrink: 0; /* Prevents boxes from squishing */
+}
+
+.upload-tile {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 2px dashed #666;
+    cursor: pointer;
+    font-size: 30px;
+    background: #f9f9f9;
+}
+
+.upload-tile input { display: none; }
+
+.thumb-tile img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 8px;
+    border: 1px solid #ddd;
+}
+
+.remove-btn {
+    position: absolute;
+    top: -5px;
+    right: -5px;
+    background: var(--error-red);
+    color: white;
+    border: none;
+    border-radius: 50%;
+    width: 20px;
+    height: 20px;
+    cursor: pointer;
+    font-weight: bold;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }

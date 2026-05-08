@@ -12,7 +12,7 @@
 </head>
 
 <body>
-    <%- include('../../components/navbar') %>
+    <%- include('../../components/mobilenavbar') %>
 
 
         <div class="components">
@@ -22,19 +22,18 @@
 
                     <div class="product-showcase">
 
-                        <input id="product-hero-img-wrapper" type="file" name="hero-img-upload" accept="image/*">
+                        <div id="product-hero-img-wrapper">
+                            <img src="/tempimages/vasewhite(1).png" alt="this is ">
+                        </div>
 
-                        <div class="product-other-imgs-wrapper" id="other-images-container">
-                            <label class="upload-tile" id="upload-label">
-                                <input type="file" id="product-other-img-input" accept="image/*">
-                                <span>+</span>
-                            </label>
-
+                        <div class="product-other-imgs-wrapper">
+                            <img src="/tempimages/vasewhite(1).png" alt="">
+                            <img src="/tempimages/vasewhite(2).png" alt="">
+                            <img src="/tempimages/vasewhite(3).png" alt="">
+                            <img src="/tempimages/vasewhite(4).png" alt="">
                         </div>
 
                     </div>
-
-
 
                     <div class="product-description">
                         <div class="basic-details">
@@ -132,7 +131,6 @@
         <script src="/js/createProduct.js" defer></script>
         <script src="/js/sidebar.js" defer></script>
         <script src="/js/productView.js" defer></script>
-
 
 
 </body>

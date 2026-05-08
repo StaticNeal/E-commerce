@@ -12,8 +12,6 @@ body {
     height: fit-content;
     display: flex;
     max-width: 1200px;
-    border: 1px solid red;
-
 }
 
 .product-showcase {
