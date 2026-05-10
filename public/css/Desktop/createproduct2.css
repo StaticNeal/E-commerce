@@ -21,11 +21,11 @@
 }
 
 #hero-product {
-    /* ← Better than fit-content for flex */
     max-width: 1200px;
     display: flex;
     align-items: stretch;
     height: auto;
+    width: 100%;
 }
 
 #product-hero-img-wrapper {
@@ -57,6 +57,7 @@
     position: relative;
     overflow: hidden;
 }
+
 
 /* Creating the "+" icon */
 #product-hero-img-wrapper::before {
@@ -121,19 +122,23 @@
     padding-bottom: 0.8rem;
     border-bottom: 1px solid var(--google-border);
 }
+
 .product-name-container {
     width: 100%;
 }
 
 .product-name-input {
     width: 100%;
-    font-size: 1.5rem; /* Matches your H1 size */
+    font-size: 1.5rem;
+    /* Matches your H1 size */
     font-weight: 700;
     font-family: inherit;
-    border: 2px solid transparent; /* Hidden until hover/focus */
+    border: 2px solid transparent;
+    /* Hidden until hover/focus */
     background: transparent;
     color: #333;
-    resize: none; /* User can't manually drag it */
+    resize: none;
+    /* User can't manually drag it */
     overflow: hidden;
     padding: 0.4rem;
     border-radius: 8px;
@@ -148,9 +153,11 @@
 .product-name-input:focus {
     outline: none;
     background: #fff;
-    border: 2px solid #006dc0; /* Google-style blue border when editing */
-    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    border: 2px solid #006dc0;
+    /* Google-style blue border when editing */
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
 }
+
 .rating {
     display: flex;
     align-items: center;
@@ -162,6 +169,10 @@
     gap: 0.3rem;
     font-size: 1.4rem;
 
+}
+
+* {
+    /* border: 1px solid red ; */
 }
 
 .star {
@@ -192,9 +203,32 @@
     margin-top: 1.2rem;
 }
 
+
+
 .description {
     padding: 0.8rem 0;
     border-bottom: 1px solid var(--google-border);
+    width: 100%;
+    height: auto;
+    font-size: 16px;
+}
+
+#product-description,
+#product-description:active,
+#product-description:focus {
+    outline: none;
+    border-top: none;
+    border-left: none;
+    border-right: none;
+    overflow: hidden;
+}
+
+textarea,
+textarea:active,
+textarea:focus {
+    resize: none;
+    outline: none;
+    border: none;
 }
 
 .variants .expand {
@@ -387,18 +421,21 @@
     display: flex;
     gap: 10px;
     flex-wrap: wrap;
-    justify-content: flex-start; /* Keeps everything pinned to the left */
+    justify-content: flex-start;
+    /* Keeps everything pinned to the left */
     width: 100%;
     margin-top: 10px;
 }
 
 /* Base style for both the upload box and the images */
-.thumb-tile, .upload-tile {
+.thumb-tile,
+.upload-tile {
     width: 80px;
     height: 80px;
     border-radius: 8px;
     position: relative;
-    flex-shrink: 0; /* Prevents boxes from squishing */
+    flex-shrink: 0;
+    /* Prevents boxes from squishing */
 }
 
 .upload-tile {
@@ -411,7 +448,9 @@
     background: #f9f9f9;
 }
 
-.upload-tile input { display: none; }
+.upload-tile input {
+    display: none;
+}
 
 .thumb-tile img {
     width: 100%;
