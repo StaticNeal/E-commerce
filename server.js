@@ -26,6 +26,7 @@ app.set('view engine', 'ejs');
 
 // Serve static files
 app.use(express.static(path.join(__dirname, 'public')));
+app.use('/product-images', express.static(path.join(__dirname, 'product-images')));
 
 // Routes
 app.use('/', pageRoutes);
