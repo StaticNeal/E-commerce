@@ -36,7 +36,15 @@ router.get('/create-product', (req, res) => {
     }
 });
 
-router.get('/make-product', (req, res) => {
-    res.render('pages/product-form')
-})
+router.get('/product/:id', (req, res) => {
+    const userAgent = req.headers['user-agent'];
+    const { id } = req.params;
+
+    if (/mobile|android|iphone/i.test(userAgent)) {
+        res.render('pages/mobile/product', { title: 'Product', productId: id });
+    } else {
+        res.render('pages/desktop/product', { title: 'Product', productId: id });
+    }
+});
+
 export default router;

@@ -1,55 +1,151 @@
-body {
+.product-showcase,
+.product-description {
+    width: 50%;
+    padding: 1.6rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.8rem;
+    height: 100%;
+    padding: 1.6rem;
+}
+
+.wrapper-of-all {
+    width: 100%;
+    height: fit-content;
     display: flex;
     justify-content: center;
     align-items: center;
     flex-direction: column;
-    height: 100dvh;
-    max-height: fit-content;
+    overflow-x: auto;
 }
 
-#product {
-    width: 100%;
-    height: fit-content;
-    display: flex;
+#hero-product {
     max-width: 1200px;
+    display: flex;
+    align-items: stretch;
+    height: auto;
+    width: 100%;
 }
 
-.product-showcase {
-    width: 50%;
-    height: 100%;
-    padding: 1.6rem;
+#product-hero-img-wrapper {
+    width: 100%;
+    aspect-ratio: 1 / 1;
+    max-width: 600px;
+    cursor: pointer;
+    border: 6px dashed #666;
+    border-radius: 16px;
+
+    /* Center the preview image */
+    background-size: contain;
+    background-position: center;
+    background-repeat: no-repeat;
+
+    /* Hides the default "No file chosen" text */
+    color: transparent;
+    position: relative;
+    overflow: hidden;
 }
 
-.product-descriptions {
-    width: 50%;
-    height: 100%;
-    padding: 1.6rem;
 
+/* Creating the "+" icon */
+#product-hero-img-wrapper::before {
+    content: "+";
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 80px;
+    color: #666;
+    font-weight: 300;
+    pointer-events: none;
+    /* Allows clicks to pass through to the input */
 }
 
-.product-descriptions .basic-details {
+/* Hide the "+" when an image is uploaded */
+#product-hero-img-wrapper.has-image::before {
+    display: none;
+}
+
+#product-hero-img-wrapper:hover {
+    border: 6px dashed #e3e4a7;
+}
+
+#product-hero-img-wrapper.has-image {
+    border: none;
+    outline: none;
+}
+
+#product-hero-img-wrapper.has-image:hover {
+    filter: grayscale(0.3);
+}
+
+
+#product-hero-img-wrapper::-webkit-file-upload-button {
+    visibility: hidden;
+    display: none;
+}
+
+
+.product-other-imgs-wrapper {
+    height: fit-content;
+    width: 100%;
+    flex-wrap: wrap;
+    display: flex;
+    gap: 0.4rem;
+    flex-grow: grow;
+}
+
+.product-other-imgs-wrapper img {
+    height: 120px;
+    aspect-ratio: 1 / 1;
+    object-fit: contain;
+    cursor: pointer;
+    border: 1px solid var(--google-border);
+    cursor: pointer;
+}
+
+.basic-details {
+    width: 100%;
     height: fit-content;
     padding-bottom: 0.8rem;
     border-bottom: 1px solid var(--google-border);
 }
 
-.product-descriptions .basic-details .product-name {
-    font-weight: 400;
-    font-size: 2em;
-}
-
-.img-container {
-    background-size: contain;
+.product-name-container {
     width: 100%;
-    aspect-ratio: 1 / 1;
 }
 
-.img-container img {
+.product-name-input {
     width: 100%;
-    height: 100%;
-    object-fit: contain;
+    font-size: 1.5rem;
+    /* Matches your H1 size */
+    font-weight: 700;
+    font-family: inherit;
+    border: 2px solid transparent;
+    /* Hidden until hover/focus */
+    background: transparent;
+    color: #333;
+    resize: none;
+    /* User can't manually drag it */
+    overflow: hidden;
+    padding: 0.4rem;
+    border-radius: 8px;
+    cursor: text;
+    transition: all 0.2s ease;
 }
 
+.product-name-input:hover {
+    border: 2px dashed #ccc;
+}
+
+.product-name-input:focus {
+    outline: none;
+    background: #fff;
+    border: 2px solid #006dc0;
+    /* Google-style blue border when editing */
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
 
 .rating {
     display: flex;
@@ -62,6 +158,10 @@ body {
     gap: 0.3rem;
     font-size: 1.4rem;
 
+}
+
+* {
+    /* border: 1px solid red ; */
 }
 
 .star {
@@ -92,26 +192,111 @@ body {
     margin-top: 1.2rem;
 }
 
+
+
 .description {
     padding: 0.8rem 0;
     border-bottom: 1px solid var(--google-border);
+    width: 100%;
+    height: auto;
+    font-size: 16px;
 }
 
-.varients {
+#product-description,
+#product-description:active,
+#product-description:focus {
+    outline: none;
+    border-top: none;
+    border-left: none;
+    border-right: none;
+    overflow: hidden;
+}
+
+.product-price {
+    resize: none;
+    outline: none;
+    border: none;
+}
+
+textarea {
+    resize: none;
+}
+
+.upload-varient {
+    /* Create the square container */
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 100px;
+    font-size: 32px;
+    height: 100px;
+
+    /* Border and Shape */
+    border: 2px dashed #888;
+    border-radius: 12px;
+    cursor: pointer;
+    background-color: #f9f9f9;
+    transition: all 0.3s ease;
+}
+
+/* Hover effect for better UX */
+.upload-varient:hover {
+    border-color: #444;
+    background-color: #f0f0f0;
+}
+
+/* Style the plus sign */
+.upload-varient span {
+    font-size: 24px;
+    color: #444;
+    font-weight: 300;
+    line-height: 1;
+}
+
+/* CRITICAL: Hide the ugly default file input button */
+#product-varient-img-input {
+    display: none;
+}
+
+.variants .expand {
+    position: absolute;
+    right: 30px;
+    top: 20px;
+    z-index: 4;
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: transform 0.3s ease;
+}
+
+.variants .expand.rotated {
+    transform: rotate(180deg);
+}
+
+
+.variants {
     height: fit-content;
-    width: fit-content;
+    width: 100%;
     display: flex;
     padding: 0.8rem;
     align-items: flex-start;
     gap: 0.8rem;
     border-bottom: 1px solid var(--google-border);
-    max-width: 40vw;
+    position: relative;
 
 }
 
-.varients h3 {
+.variants h3 {
     font-weight: 500;
     margin-top: 5px;
+}
+
+.selected-varient {
+    border: 1px solid #006dc0;
 }
 
 .varient-list {
@@ -119,25 +304,46 @@ body {
     flex-wrap: wrap;
     gap: 0.8rem;
     list-style: none;
-    overflow: auto;
     padding: 0.8rem;
-    max-height: 30dvh;
+    overflow: hidden;
     scrollbar-width: thin;
+
+}
+
+.varient-list.expanded {
+    overflow: auto;
 }
 
 .varient-list .varient-img {
-
     height: 100px;
     aspect-ratio: 1 / 1;
     border: 1px solid var(--google-border);
     flex-shrink: 0;
     cursor: pointer;
+    display: none;
+}
+
+.varient-list.expanded .varient-img {
+    display: block;
+}
+
+.varient-list .varient-img.selected-varient {
+    display: block;
 }
 
 .varient-list .varient-img img {
     width: 100%;
     height: 100%;
     object-fit: contain;
+}
+
+.other-details {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    align-items: baseline;
 }
 
 .quantity {
@@ -193,9 +399,9 @@ body {
     flex-wrap: wrap;
 }
 
+
 .buttons .buy-now-btn,
 .buttons .add-to-cart-btn {
-    border: 1px solid red;
     width: calc(50% - 0.4rem);
 }
 
@@ -229,6 +435,146 @@ body {
     height: 120px;
     aspect-ratio: 1 / 1;
     object-fit: contain;
-    border: 1px solid var(--google-border);
     cursor: pointer;
+}
+
+.other-details,
+.other-products {
+    width: 100%;
+    max-width: 1200px;
+}
+
+.product-other-imgs-wrapper {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+    justify-content: flex-start;
+    /* Keeps everything pinned to the left */
+    width: 100%;
+    margin-top: 10px;
+}
+
+/* Base style for both the upload box and the images */
+.thumb-tile,
+.upload-tile {
+    width: 80px;
+    height: 80px;
+    border-radius: 8px;
+    position: relative;
+    flex-shrink: 0;
+    /* Prevents boxes from squishing */
+}
+
+.upload-tile {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 2px dashed #666;
+    cursor: pointer;
+    font-size: 30px;
+    background: #f9f9f9;
+}
+
+.upload-tile input {
+    display: none;
+}
+
+.thumb-tile img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 8px;
+    border: 1px solid #ddd;
+}
+
+.remove-btn {
+    position: absolute;
+    top: -5px;
+    right: -5px;
+    background: var(--error-red);
+    color: white;
+    border: none;
+    border-radius: 50%;
+    width: 20px;
+    height: 20px;
+    cursor: pointer;
+    font-weight: bold;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* ==================== VARIANT CONTROLS STYLES ==================== */
+
+.variant-image-wrapper {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    border-radius: 8px;
+}
+
+.variant-image-wrapper img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    border-radius: 8px;
+}
+
+.variant-controls {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.5);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    border-radius: 8px;
+}
+
+.varient-list .varient-img:hover .variant-controls {
+    opacity: 1;
+}
+
+.variant-remove-btn,
+.variant-edit-btn {
+    background: rgba(255, 255, 255, 0.9);
+    border: none;
+    border-radius: 50%;
+    width: 32px;
+    height: 32px;
+    cursor: pointer;
+    font-weight: bold;
+    font-size: 1rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s ease;
+    color: #333;
+}
+
+.variant-remove-btn:hover {
+    background: #ff4444;
+    color: white;
+    transform: scale(1.1);
+}
+
+.variant-edit-btn:hover {
+    background: #4488ff;
+    color: white;
+    transform: scale(1.1);
+}
+
+/* Style for when variants section is expanded */
+.variants.expanded .varient-list {
+    overflow: auto;
+    max-height: 300px;
 }

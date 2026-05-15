@@ -28,23 +28,13 @@
     width: 100%;
 }
 
-#product-hero-img-wrapper {
-    width: 100%;
-    aspect-ratio: 1 / 1;
-    background-size: contain;
-    max-width: 600px;
-    cursor: pointer;
-    border: 6px dashed #666;
-    border-radius: 16px;
-    /* padding: 0.8rem; */
-}
+
 
 #product-hero-img-wrapper {
     width: 100%;
     aspect-ratio: 1 / 1;
     max-width: 600px;
     cursor: pointer;
-    border: 6px dashed #666;
     border-radius: 16px;
 
     /* Center the preview image */
@@ -58,37 +48,9 @@
     overflow: hidden;
 }
 
-
-/* Creating the "+" icon */
-#product-hero-img-wrapper::before {
-    content: "+";
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    font-size: 80px;
-    color: #666;
-    font-weight: 300;
-    pointer-events: none;
-    /* Allows clicks to pass through to the input */
-}
-
-/* Hide the "+" when an image is uploaded */
-#product-hero-img-wrapper.has-image::before {
-    display: none;
-}
-
-#product-hero-img-wrapper:hover {
-    border: 6px dashed #e3e4a7;
-}
-
 #product-hero-img-wrapper.has-image {
     border: none;
     outline: none;
-}
-
-#product-hero-img-wrapper.has-image:hover {
-    filter: grayscale(0.3);
 }
 
 
@@ -146,18 +108,6 @@
     transition: all 0.2s ease;
 }
 
-.product-name-input:hover {
-    border: 2px dashed #ccc;
-}
-
-.product-name-input:focus {
-    outline: none;
-    background: #fff;
-    border: 2px solid #006dc0;
-    /* Google-style blue border when editing */
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-}
-
 .rating {
     display: flex;
     align-items: center;
@@ -169,10 +119,6 @@
     gap: 0.3rem;
     font-size: 1.4rem;
 
-}
-
-* {
-    /* border: 1px solid red ; */
 }
 
 .star {

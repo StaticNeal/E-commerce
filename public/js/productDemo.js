@@ -1,54 +1,4 @@
-// Fallback demo product data - used if API fails
-const fallbackDemoProducts = [
-    {
-        id: 1,
-        name: "Gaming Mouse Pro",
-        description: "High performance gaming mouse with precision tracking",
-        price: 45.99,
-        rating: 5,
-        image: "/product-images/hero-images/gaming%20mouse.jpg"
-    },
-    {
-        id: 2,
-        name: "RGB Gaming Mouse",
-        description: "12000 DPI sensor with ergonomic design for gamers",
-        price: 65.99,
-        rating: 5,
-        image: "/product-images/other-images/Razer%20Naga%20MMO%20Mouse.jpg"
-    },
-    {
-        id: 3,
-        name: "Wireless Gaming Mouse",
-        description: "Lightspeed wireless technology with long battery life",
-        price: 52.99,
-        rating: 4,
-        image: "/product-images/other-images/Logitech%20G502%20Lightspeed%20Wireless%20Gaming%20Mouse%20with%20Hero%2025K%20Sensor%2C.jpg"
-    },
-    {
-        id: 4,
-        name: "Professional Gaming Mouse",
-        description: "Advanced sensors for competitive gaming performance",
-        price: 58.99,
-        rating: 4,
-        image: "/product-images/other-images/Amazon_com_%20Logitech%20G300s%20Optical%20Ambidextrous%20Gaming%20Mouse%20%E2%80%93%209%20Programmable%20Buttons%2C%20Onboard%20Memory%20_%20Video%20Games.jpg"
-    },
-    {
-        id: 5,
-        name: "Budget Gaming Mouse",
-        description: "Affordable gaming mouse with responsive controls",
-        price: 39.99,
-        rating: 5,
-        image: "/product-images/hero-images/%2415_99.jpg"
-    },
-    {
-        id: 6,
-        name: "Premium Gaming Mouse",
-        description: "Top tier gaming mouse with latest sensor technology",
-        price: 72.99,
-        rating: 5,
-        image: "/product-images/other-images/lucitik.jpg"
-    }
-];
+
 
 // Function to truncate description
 function truncateDescription(text, maxLength = 55) {
@@ -138,9 +88,9 @@ function attachProductClickHandlers() {
     cards.forEach(card => {
         card.addEventListener('click', function() {
             const productId = this.getAttribute('data-product-id');
-            console.log('Product clicked:', productId);
-            // TODO: Navigate to product details page or open modal
-            // Example: window.location.href = `/product/${productId}`;
+            if (productId) {
+                window.location.href = `/product/${productId}`;
+            }
         });
     });
 }
