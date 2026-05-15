@@ -43,7 +43,7 @@ export const getProductById = async (req, res) => {
 
 export const createProduct = async (req, res) => {
     try {
-        const { name, description, price, category, images, variations } = req.body;
+        const { name, description, price, category, images, heroImage, rating, variations } = req.body;
         if (!name || !description || !price || !category) {
             return res.status(400).json({
                 success: false,
@@ -51,8 +51,29 @@ export const createProduct = async (req, res) => {
             });
         }
 
+        // Validate rating if provided
+        let productRating = 4; // default rating
+        if (rating !== undefined) {
+            const ratingNum = parseFloat(rating);
+            if (ratingNum < 0 || ratingNum > 5) {
+                return res.status(400).json({
+                    success: false,
+                    message: 'Rating must be between 0 and 5'
+                });
+            }
+            productRating = ratingNum;
+        }
+
         const newProduct = new product({
-            name, description, price, category, images: images || [], variations: variations || [], seller: req.user.id
+            name, 
+            description, 
+            price, 
+            category, 
+            images: images || [], 
+            heroImage: heroImage || '',
+            rating: productRating,
+            variations: variations || [], 
+            seller: req.user.id
         });
         
         await newProduct.save();

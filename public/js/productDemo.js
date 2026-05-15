@@ -60,14 +60,18 @@ function truncateDescription(text, maxLength = 55) {
 
 // Function to render a single product card
 function renderProductCard(product) {
+    // Set default rating to 4 if not provided or is 0
+    const rating = (product.rating && product.rating > 0) ? Math.round(product.rating) : 4;
+    
     const stars = Array(5)
         .fill(0)
-        .map((_, i) => `<span class="star">${i < (product.rating || 0) ? '★' : '☆'}</span>`)
+        .map((_, i) => `<span class="star">${i < rating ? '★' : '☆'}</span>`)
         .join('');
 
-    const image = product.images && product.images.length > 0 
-        ? product.images[0] 
-        : product.image;
+    // Prioritize heroImage first, then images array, then fallback image
+    const image = product.heroImage 
+        ? product.heroImage
+        : (product.images && product.images.length > 0 ? product.images[0] : product.image);
 
     const truncatedDescription = truncateDescription(product.description);
 
