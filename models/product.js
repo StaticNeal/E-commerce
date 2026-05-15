@@ -33,7 +33,11 @@ const productSchema = new mongoose.Schema({
     rating: {
         type: Number,
         default: 0,
-    }
+    },
+    variations: {
+        type: Array,
+        default: [],
+    },
 }, { timestamps: true });
 
 export default mongoose.model("product", productSchema);
