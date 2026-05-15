@@ -2,67 +2,51 @@
 const fallbackDemoProducts = [
     {
         id: 1,
-        name: "Brown Ceramic Vase Classic",
-        description: "Beautiful handcrafted brown ceramic vase with elegant design",
+        name: "Gaming Mouse Pro",
+        description: "High performance gaming mouse with precision tracking",
         price: 45.99,
         rating: 5,
-        image: "/product-images/vasebrown(1).png"
+        image: "/product-images/hero-images/gaming%20mouse.jpg"
     },
     {
         id: 2,
-        name: "Brown Vase Deluxe",
-        description: "Premium brown vase with intricate detailing and smooth finish",
+        name: "RGB Gaming Mouse",
+        description: "12000 DPI sensor with ergonomic design for gamers",
         price: 65.99,
         rating: 5,
-        image: "/product-images/vasebrown(2).png"
+        image: "/product-images/other-images/Razer%20Naga%20MMO%20Mouse.jpg"
     },
     {
         id: 3,
-        name: "Brown Rustic Vase",
-        description: "Rustic brown vase perfect for traditional home decor",
+        name: "Wireless Gaming Mouse",
+        description: "Lightspeed wireless technology with long battery life",
         price: 52.99,
         rating: 4,
-        image: "/product-images/vasebrown(3).png"
+        image: "/product-images/other-images/Logitech%20G502%20Lightspeed%20Wireless%20Gaming%20Mouse%20with%20Hero%2025K%20Sensor%2C.jpg"
     },
     {
         id: 4,
-        name: "Brown Modern Vase",
-        description: "Contemporary brown ceramic vase with sleek modern lines",
+        name: "Professional Gaming Mouse",
+        description: "Advanced sensors for competitive gaming performance",
         price: 58.99,
         rating: 4,
-        image: "/product-images/vasebrown(4).png"
+        image: "/product-images/other-images/Amazon_com_%20Logitech%20G300s%20Optical%20Ambidextrous%20Gaming%20Mouse%20%E2%80%93%209%20Programmable%20Buttons%2C%20Onboard%20Memory%20_%20Video%20Games.jpg"
     },
     {
         id: 5,
-        name: "White Ceramic Vase",
-        description: "Elegant white ceramic vase with minimalist design",
+        name: "Budget Gaming Mouse",
+        description: "Affordable gaming mouse with responsive controls",
         price: 39.99,
         rating: 5,
-        image: "/product-images/vasewhite(1).png"
+        image: "/product-images/hero-images/%2415_99.jpg"
     },
     {
         id: 6,
-        name: "White Porcelain Vase",
-        description: "Fine porcelain white vase with refined elegant style",
+        name: "Premium Gaming Mouse",
+        description: "Top tier gaming mouse with latest sensor technology",
         price: 72.99,
         rating: 5,
-        image: "/product-images/vasewhite(2).png"
-    },
-    {
-        id: 7,
-        name: "White Minimalist Vase",
-        description: "Clean white vase with minimalist contemporary aesthetic",
-        price: 49.99,
-        rating: 4,
-        image: "/product-images/vasewhite(3).png"
-    },
-    {
-        id: 8,
-        name: "White Modern Vase",
-        description: "Modern white ceramic vase with artistic finish",
-        price: 62.99,
-        rating: 4,
-        image: "/product-images/vasewhite(4).png"
+        image: "/product-images/other-images/lucitik.jpg"
     }
 ];
 

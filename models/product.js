@@ -17,6 +17,10 @@ const productSchema = new mongoose.Schema({
         type: String,
         required: true
     },
+    heroImage:{
+        type: String,
+        default: ''
+    },
     images: {
         type: Array,
         default: [],
@@ -35,7 +39,8 @@ const productSchema = new mongoose.Schema({
         default: 0,
     },
     variations: {
-        type: Array,
+        type: [mongoose.Schema.Types.ObjectId],
+        ref: 'Variation',
         default: [],
     },
 }, { timestamps: true });
