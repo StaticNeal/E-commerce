@@ -38,9 +38,9 @@
     border-radius: 16px;
 
     /* Center the preview image */
-    background-size: contain;
-    background-position: center;
-    background-repeat: no-repeat;
+    background-size: contain !important;
+    background-position: center center !important;
+    background-repeat: no-repeat !important;
 
     /* Hides the default "No file chosen" text */
     color: transparent;

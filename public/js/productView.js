@@ -36,9 +36,20 @@ function displayProductDetails(product) {
 
     
     const otherImgsWrapper = document.querySelector('.product-other-imgs-wrapper');
-    if (otherImgsWrapper && product.images && product.images.length > 0) {
+    if (otherImgsWrapper) {
         otherImgsWrapper.innerHTML = '';
-        product.images.forEach(img => {
+        
+        // Create array with all images (hero first, then other images)
+        const allImages = [];
+        if (product.heroImage) {
+            allImages.push(product.heroImage);
+        }
+        if (product.images && product.images.length > 0) {
+            allImages.push(...product.images);
+        }
+        
+        // Display all images
+        allImages.forEach(img => {
             const imgEl = document.createElement('img');
             imgEl.src = img;
             imgEl.alt = product.name;

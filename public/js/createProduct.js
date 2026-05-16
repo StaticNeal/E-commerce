@@ -11,7 +11,7 @@ if (descriptionElement) {
         descriptionElement.addEventListener('click', (event) => {
             if (event.target.closest('.toggle-btn')) {
                 const isTruncated = descriptionElement.innerHTML.includes('Read more');
-                descriptionElement.innerHTML = isTruncated 
+                descriptionElement.innerHTML = isTruncated
                     ? `${fullText} <span class="toggle-btn" style="color: #4cacf5; cursor: pointer;">Read less</span>`
                     : `${truncatedText} <span class="toggle-btn" style="color: #4cacf5; cursor: pointer;">... Read more</span>`;
             }
@@ -31,7 +31,7 @@ if (productNameElement) {
         productNameElement.addEventListener('click', (event) => {
             if (event.target.closest('.toggle-btn')) {
                 const isTruncated = productNameElement.innerHTML.includes('Read more');
-                productNameElement.innerHTML = isTruncated 
+                productNameElement.innerHTML = isTruncated
                     ? `${fullText} <span class="toggle-btn" style="color: #4cacf5; cursor: pointer;">Read less</span>`
                     : `${truncatedText} <span class="toggle-btn" style="color: #4cacf5; cursor: pointer;">... Read more</span>`;
             }
@@ -58,23 +58,23 @@ function createThumbnail(imageSrc, isHeroTwin = false) {
         <button type="button" class="remove-btn">×</button>
     `;
 
-    
-    div.addEventListener('click', function(e) {
-        
+
+    div.addEventListener('click', function (e) {
+
         if (e.target.classList.contains('remove-btn')) return;
 
         heroInput.style.backgroundImage = `url(${imageSrc})`;
         heroInput.classList.add('has-image');
-        
-        
+
+
         document.querySelectorAll('.thumb-tile').forEach(t => t.style.borderColor = '#ccc');
         div.style.borderColor = '#4cacf5';
     });
 
-    
+
     const removeBtn = div.querySelector('.remove-btn');
     removeBtn.onclick = function (e) {
-        e.stopPropagation(); 
+        e.stopPropagation();
         if (div.getAttribute('data-is-hero') === 'true' || heroInput.style.backgroundImage.includes(imageSrc)) {
             heroInput.style.backgroundImage = '';
             heroInput.classList.remove('has-image');
@@ -93,10 +93,10 @@ heroInput.addEventListener('change', function () {
         reader.onload = function (e) {
             heroInput.style.backgroundImage = `url(${e.target.result})`;
             heroInput.classList.add('has-image');
-            
+
             const existingHero = otherImagesContainer.querySelector('[data-is-hero="true"]');
             if (existingHero) existingHero.remove();
-            
+
             createThumbnail(e.target.result, true);
         }
         reader.readAsDataURL(file);
@@ -105,17 +105,24 @@ heroInput.addEventListener('change', function () {
 
 
 
-otherImgInput.addEventListener('change', function () {
-    const file = this.files[0];
-    if (file) {
-        const reader = new FileReader();
-        reader.onload = function (e) {
-            createThumbnail(e.target.result, false);
-            otherImgInput.value = '';
+
+try {
+    otherImgInput.addEventListener('change', function () {
+        const file = this.files[0];
+        if (file) {
+            const reader = new FileReader();
+            reader.onload = function (e) {
+                createThumbnail(e.target.result, false);
+                otherImgInput.value = '';
+            }
+            reader.readAsDataURL(file);
         }
-        reader.readAsDataURL(file);
-    }
-});
+    });
+
+} catch (error) {
+    console.log('mobile view activated')
+}
+
 
 
 const titleInput = document.getElementById('product-title');
