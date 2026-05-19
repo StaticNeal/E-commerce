@@ -6,14 +6,14 @@ if (descriptionElement) {
 
     if (words.length > 35) {
         const truncatedText = words.slice(0, 35).join(' ');
-        descriptionElement.innerHTML = `${truncatedText} <span class="toggle-btn" style="color: #4cacf5; cursor: pointer;">... Read more</span>`;
+        descriptionElement.innerHTML = `${truncatedText} <span class="toggle-btn" style="color: #4cacf5; cursor: pointer;">... ...Read More</span>`;
 
         descriptionElement.addEventListener('click', (event) => {
             if (event.target.closest('.toggle-btn')) {
-                const isTruncated = descriptionElement.innerHTML.includes('Read more');
+                const isTruncated = descriptionElement.innerHTML.includes('...Read More');
                 descriptionElement.innerHTML = isTruncated
-                    ? `${fullText} <span class="toggle-btn" style="color: #4cacf5; cursor: pointer;">Read less</span>`
-                    : `${truncatedText} <span class="toggle-btn" style="color: #4cacf5; cursor: pointer;">... Read more</span>`;
+                    ? `${fullText} <span class="toggle-btn" style="color: #4cacf5; cursor: pointer;">Read Less</span>`
+                    : `${truncatedText} <span class="toggle-btn" style="color: #4cacf5; cursor: pointer;">... ...Read More</span>`;
             }
         });
     }
@@ -26,14 +26,14 @@ if (productNameElement) {
 
     if (words.length > 6) {
         const truncatedText = words.slice(0, 6).join(' ');
-        productNameElement.innerHTML = `${truncatedText} <span class="toggle-btn" style="color: #4cacf5; cursor: pointer;">... Read more</span>`;
+        productNameElement.innerHTML = `${truncatedText} <span class="toggle-btn" style="color: #4cacf5; cursor: pointer;">... ...Read More</span>`;
 
         productNameElement.addEventListener('click', (event) => {
             if (event.target.closest('.toggle-btn')) {
-                const isTruncated = productNameElement.innerHTML.includes('Read more');
+                const isTruncated = productNameElement.innerHTML.includes('...Read More');
                 productNameElement.innerHTML = isTruncated
-                    ? `${fullText} <span class="toggle-btn" style="color: #4cacf5; cursor: pointer;">Read less</span>`
-                    : `${truncatedText} <span class="toggle-btn" style="color: #4cacf5; cursor: pointer;">... Read more</span>`;
+                    ? `${fullText} <span class="toggle-btn" style="color: #4cacf5; cursor: pointer;">Read Less</span>`
+                    : `${truncatedText} <span class="toggle-btn" style="color: #4cacf5; cursor: pointer;">... ...Read More</span>`;
             }
         });
     }
