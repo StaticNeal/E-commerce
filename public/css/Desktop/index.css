@@ -116,14 +116,18 @@
     padding: 8px 12px 12px !important;
 }
 
-.product-varient-name-input {
+.product-varient-name-input, .product-varient-type-input {
     color: #131212;
     font-size: 12px;
     height: auto;
     overflow: hidden;
     width: 100%;
+    height: auto;
     padding: 0 12px;
     border: none;
     color: #333;
     border-bottom: 1px solid var(--border-color);
+}
+#product-variant-type{
+    font-size: 18px;
 }
