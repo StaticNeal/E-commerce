@@ -18,12 +18,12 @@ function renderProductCard(product, variant) {
     let image = null;
     if (variant) {
         if (variant.heroImage) {
-            image = variant.heroImage.startsWith('http') 
+            image = variant.heroImage.startsWith('http') || variant.heroImage.startsWith('/uploads/')
                 ? variant.heroImage 
                 : `/uploads/${variant.heroImage}`;
         } else if (variant.images && variant.images.length > 0) {
             const firstImg = variant.images[0];
-            image = firstImg.startsWith('http') 
+            image = firstImg.startsWith('http') || firstImg.startsWith('/uploads/')
                 ? firstImg 
                 : `/uploads/${firstImg}`;
         }

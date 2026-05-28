@@ -45,6 +45,22 @@ const otherImgInput = document.getElementById('product-other-img-input');
 const otherImagesContainer = document.getElementById('other-images-container');
 const uploadLabel = document.getElementById('upload-label');
 
+// File size limit: 50MB
+const MAX_FILE_SIZE = 50 * 1024 * 1024; // 50MB in bytes
+
+/**
+ * Validates file size
+ */
+function validateFileSize(file) {
+    if (file.size > MAX_FILE_SIZE) {
+        const maxSizeMB = MAX_FILE_SIZE / (1024 * 1024);
+        const fileSizeMB = (file.size / (1024 * 1024)).toFixed(2);
+        alert(`File size (${fileSizeMB}MB) exceeds maximum allowed size of ${maxSizeMB}MB`);
+        return false;
+    }
+    return true;
+}
+
 /**
  * Creates a thumbnail and adds it to the container.
  */
@@ -75,11 +91,30 @@ function createThumbnail(imageSrc, isHeroTwin = false) {
     const removeBtn = div.querySelector('.remove-btn');
     removeBtn.onclick = function (e) {
         e.stopPropagation();
-        if (div.getAttribute('data-is-hero') === 'true' || heroInput.style.backgroundImage.includes(imageSrc)) {
+        const isHeroImage = div.getAttribute('data-is-hero') === 'true' || heroInput.style.backgroundImage.includes(imageSrc);
+        
+        if (isHeroImage) {
             heroInput.style.backgroundImage = '';
             heroInput.classList.remove('has-image');
+            
+            // Remove the hero variant
+            const heroVariant = document.querySelector('[data-is-hero-variant="true"]');
+            if (heroVariant) heroVariant.remove();
         }
+        
         div.remove();
+        
+        // If hero was deleted, automatically select the next available image
+        if (isHeroImage) {
+            const nextImage = otherImagesContainer.querySelector('.thumb-tile:not([data-is-hero])');
+            if (nextImage) {
+                const nextImageSrc = nextImage.querySelector('img').src;
+                // Simulate click to select it as hero
+                nextImage.click();
+                // Create variant for it
+                createVariantWithImage(nextImageSrc);
+            }
+        }
     };
 
     otherImagesContainer.insertBefore(div, uploadLabel);
@@ -89,6 +124,12 @@ function createThumbnail(imageSrc, isHeroTwin = false) {
 heroInput.addEventListener('change', function () {
     const file = this.files[0];
     if (file) {
+        // Validate file size
+        if (!validateFileSize(file)) {
+            this.value = '';
+            return;
+        }
+
         const reader = new FileReader();
         reader.onload = function (e) {
             heroInput.style.backgroundImage = `url(${e.target.result})`;
@@ -129,11 +170,6 @@ function createVariantWithImage(imageSrc) {
         <button type="button" class="variant-remove-btn">×</button>
     `;
 
-    // Set variant name to input
-    if (!variantNameInput.value) {
-        variantNameInput.value = 'Original';
-    }
-
     // Click to select this variant
     variantItem.addEventListener('click', function (e) {
         if (e.target.classList.contains('variant-remove-btn')) return;
@@ -147,15 +183,31 @@ function createVariantWithImage(imageSrc) {
         // Select this variant
         variantItem.classList.add('selected');
         variantItem.style.borderColor = '#4cacf5';
-        variantNameInput.value = 'Original';
     });
 
     // Remove button
     const removeBtn = variantItem.querySelector('.variant-remove-btn');
     removeBtn.addEventListener('click', function (e) {
         e.stopPropagation();
+        const isHeroVariant = variantItem.getAttribute('data-is-hero-variant') === 'true';
         variantItem.remove();
         variantNameInput.value = '';
+        
+        // If hero variant is removed, auto-select next image
+        if (isHeroVariant) {
+            const nextImage = otherImagesContainer.querySelector('.thumb-tile:not([data-is-hero])');
+            if (nextImage) {
+                const nextImageSrc = nextImage.querySelector('img').src;
+                // Simulate click to select it as hero
+                nextImage.click();
+                // Create variant for it
+                createVariantWithImage(nextImageSrc);
+            } else {
+                // Clear hero if no other images
+                heroInput.style.backgroundImage = '';
+                heroInput.classList.remove('has-image');
+            }
+        }
     });
 
     // Add to list before upload button
@@ -173,6 +225,12 @@ try {
     otherImgInput.addEventListener('change', function () {
         const file = this.files[0];
         if (file) {
+            // Validate file size
+            if (!validateFileSize(file)) {
+                this.value = '';
+                return;
+            }
+
             const reader = new FileReader();
             reader.onload = function (e) {
                 createThumbnail(e.target.result, false);
@@ -200,3 +258,113 @@ if (titleInput) titleInput.addEventListener('input', adjustHeight);
 
 
 const varientButton = document.getElementById('upload-varient');
+
+// Save Product Functionality
+const saveButton = document.querySelector('.buy-now-btn');
+const productPriceInput = document.querySelector('.product-price');
+
+function validateProductForm() {
+    const errors = [];
+    
+    // Get form values
+    const title = document.getElementById('product-title').value.trim();
+    const price = productPriceInput.value.trim();
+    const description = document.getElementById('product-description').value.trim();
+    const hasHeroImage = heroInput.classList.contains('has-image');
+    const hasVariant = document.querySelector('[data-is-hero-variant="true"]') !== null;
+    
+    // Validate required fields
+    if (!title) errors.push('Product name is required');
+    if (!price) errors.push('Product price is required');
+    if (!description) errors.push('Product description is required');
+    if (!hasHeroImage) errors.push('Hero image is required');
+    if (!hasVariant) errors.push('At least one variant (with image) is required');
+    
+    return { isValid: errors.length === 0, errors };
+}
+
+function saveProduct() {
+    const validation = validateProductForm();
+    
+    if (!validation.isValid) {
+        alert('Please fill all required fields:\n' + validation.errors.join('\n'));
+        return;
+    }
+    
+    // Collect product data
+    const price = productPriceInput.value.trim();
+    const productData = {
+        title: document.getElementById('product-title').value.trim(),
+        description: document.getElementById('product-description').value.trim(),
+        variantType: document.getElementById('product-variant-type').value.trim() || '',
+        variants: []
+    };
+    
+    // Collect all thumbnail images (both hero and other images)
+    const thumbnails = document.querySelectorAll('.thumb-tile img');
+    const allImages = [];
+    let heroImage = null;
+    
+    thumbnails.forEach((img, index) => {
+        if (img && img.src) {
+            allImages.push(img.src);
+            // First image is the hero image
+            if (index === 0) {
+                heroImage = img.src;
+            }
+        }
+    });
+    
+    // Validate we have images to save
+    if (allImages.length === 0) {
+        alert('Please add at least one product image');
+        return;
+    }
+    
+    // Create a single variant with all images
+    productData.variants.push({
+        images: allImages,
+        heroImage: heroImage,
+        type: productData.variantType || 'Original',
+        price: parseFloat(price) || 0
+    });
+    
+    // Send to server
+    fetch('/products/new', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(productData)
+    })
+    .then(response => {
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        return response.json();
+    })
+    .then(data => {
+        if (data.success) {
+            alert('Product saved successfully!');
+            // Reset form
+            document.getElementById('product-title').value = '';
+            productPriceInput.value = '';
+            document.getElementById('product-description').value = '';
+            document.getElementById('product-variant-type').value = '';
+            heroInput.style.backgroundImage = '';
+            heroInput.classList.remove('has-image');
+            document.querySelectorAll('[data-is-hero-variant="true"]').forEach(v => v.remove());
+            document.querySelectorAll('.thumb-tile').forEach(t => t.remove());
+        } else {
+            alert('Error saving product: ' + (data.message || 'Unknown error'));
+        }
+    })
+    .catch(error => {
+        console.error('Error:', error);
+        alert('Error saving product: ' + error.message);
+    });
+}
+
+if (saveButton) {
+    saveButton.addEventListener('click', saveProduct);
+}

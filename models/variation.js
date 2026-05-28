@@ -6,6 +6,10 @@ const variationSchema = new mongoose.Schema({
         ref: 'Product',
         required: true
     },
+    type: {
+        type: String,
+        default: ''
+    },
     name: {
         type: String,
         required: true

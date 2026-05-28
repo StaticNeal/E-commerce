@@ -17,6 +17,16 @@ function resolveImagePath(imagePath) {
 
 // Initialize Swiper galleries
 function initializeSwipers() {
+    // Destroy existing swipers if they exist
+    if (thumbsSwiper) {
+        thumbsSwiper.destroy();
+        thumbsSwiper = null;
+    }
+    if (gallerySwiper) {
+        gallerySwiper.destroy();
+        gallerySwiper = null;
+    }
+
     // Thumbnails swiper
     thumbsSwiper = new Swiper('.product-thumbs-swiper', {
         spaceBetween: 10,
@@ -81,6 +91,12 @@ async function loadProductDetails() {
         const variationsResponse = await fetch(`/variations/product/${productId}`);
         const variationsResult = await variationsResponse.json();
 
+        console.log('Product variations fetched:', {
+            success: variationsResult.success,
+            count: variationsResult.data ? variationsResult.data.length : 0,
+            variations: variationsResult.data
+        });
+
         if (variationsResult.success && variationsResult.data && variationsResult.data.length > 0) {
             displayProductDetails(product, variationsResult.data);
             setupVariantFunctionality(product, variationsResult.data);
@@ -98,36 +114,61 @@ function displayProductDetails(product, variations) {
     if (variations.length === 0) return;
     const firstVariation = variations[0];
 
-    // Collect all images from all variations
+    // Collect all images from all variations, avoiding duplicates
     const allImages = [];
-    variations.forEach(variation => {
+    const imageSet = new Set(); // Track added images to avoid duplicates
+
+    variations.forEach((variation, vidx) => {
+        console.log(`Processing variation ${vidx}:`, {
+            hasHeroImage: !!variation.heroImage,
+            imagesCount: variation.images ? variation.images.length : 0,
+            heroImage: variation.heroImage,
+            images: variation.images
+        });
+
         if (variation.heroImage) {
-            allImages.push({
-                src: resolveImagePath(variation.heroImage),
-                alt: `${product.name} - ${variation.value}`
-            });
-        }
-        if (variation.images && variation.images.length > 0) {
-            variation.images.forEach(img => {
+            const resolvedPath = resolveImagePath(variation.heroImage);
+            if (!imageSet.has(resolvedPath)) {
+                imageSet.add(resolvedPath);
                 allImages.push({
-                    src: resolveImagePath(img),
+                    src: resolvedPath,
                     alt: `${product.name} - ${variation.value}`
                 });
+                console.log('Added hero image:', resolvedPath);
+            }
+        }
+        if (variation.images && variation.images.length > 0) {
+            variation.images.forEach((img, iidx) => {
+                const resolvedPath = resolveImagePath(img);
+                if (!imageSet.has(resolvedPath)) {
+                    imageSet.add(resolvedPath);
+                    allImages.push({
+                        src: resolvedPath,
+                        alt: `${product.name} - ${variation.value}`
+                    });
+                    console.log(`Added image ${iidx}:`, resolvedPath);
+                }
             });
         }
     });
+
+    console.log('Total images collected:', allImages.length, allImages);
 
     // Add hero gallery images
     const heroWrapper = document.getElementById('product-hero-img-wrapper');
     if (heroWrapper) {
         heroWrapper.innerHTML = '';
-        allImages.forEach(image => {
+        allImages.forEach((image, index) => {
             const slide = document.createElement('div');
             slide.className = 'swiper-slide';
             const img = document.createElement('img');
             img.src = image.src;
             img.alt = image.alt;
-            img.onerror = function() { this.src = PLACEHOLDER_IMAGE; };
+            img.onerror = function() { 
+                console.error('Failed to load image:', image.src);
+                this.src = PLACEHOLDER_IMAGE; 
+            };
+            console.log(`Loading hero slide ${index}:`, image.src);
             slide.appendChild(img);
             heroWrapper.appendChild(slide);
         });
@@ -137,14 +178,18 @@ function displayProductDetails(product, variations) {
     const thumbsWrapper = document.getElementById('product-other-imgs-wrapper');
     if (thumbsWrapper) {
         thumbsWrapper.innerHTML = '';
-        allImages.forEach(image => {
+        allImages.forEach((image, index) => {
             const slide = document.createElement('div');
             slide.className = 'swiper-slide';
             const img = document.createElement('img');
             img.src = image.src;
             img.alt = image.alt;
-            img.onerror = function() { this.src = PLACEHOLDER_IMAGE; };
+            img.onerror = function() { 
+                console.error('Failed to load thumbnail:', image.src);
+                this.src = PLACEHOLDER_IMAGE; 
+            };
             img.style.cursor = 'pointer';
+            console.log(`Loading thumb slide ${index}:`, image.src);
             slide.appendChild(img);
             thumbsWrapper.appendChild(slide);
         });
@@ -152,8 +197,43 @@ function displayProductDetails(product, variations) {
 
     // Initialize Swiper after images are loaded
     setTimeout(() => {
-        initializeSwipers();
-    }, 100);
+        if (allImages.length === 0) {
+            console.warn('No images available for this product');
+        }
+        
+        // Wait for images to load before initializing Swiper
+        const images = document.querySelectorAll('.product-hero-swiper img, .product-thumbs-swiper img');
+        let loadedCount = 0;
+        
+        if (images.length === 0) {
+            console.error('No image elements found in Swiper containers');
+            initializeSwipers();
+            return;
+        }
+        
+        images.forEach(img => {
+            if (img.complete) {
+                loadedCount++;
+            } else {
+                img.addEventListener('load', () => {
+                    loadedCount++;
+                    if (loadedCount === images.length) {
+                        initializeSwipers();
+                    }
+                });
+                img.addEventListener('error', () => {
+                    loadedCount++;
+                    if (loadedCount === images.length) {
+                        initializeSwipers();
+                    }
+                });
+            }
+        });
+        
+        if (loadedCount === images.length) {
+            initializeSwipers();
+        }
+    }, 50);
 
     // Display product name
     const productName = document.querySelector('.product-name');
