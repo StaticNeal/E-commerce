@@ -9,6 +9,9 @@
     <link rel="stylesheet" href="/css/generic.css">
     <link rel="stylesheet" href="/css/Desktop/product.css">
     <link rel="stylesheet" href="/css/Desktop/index.css">
+
+    <!-- Swiper CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
 </head>
 
 
@@ -23,18 +26,32 @@
 
                     <div class="product-showcase">
 
-                        <div id="product-hero-img-wrapper">
+                        <!-- Swiper Hero Images -->
+                        <div class="swiper product-hero-swiper">
+                            <div class="swiper-wrapper" id="product-hero-img-wrapper">
+                                <!-- Images will be added by JavaScript -->
+                            </div>
+
+                            <div class="swiper-pagination"></div>
+                            <div class="swiper-button-prev"></div>
+                            <div class="swiper-button-next"></div>
                         </div>
 
-                        <div class="product-other-imgs-wrapper">
 
+                        <!-- Swiper Thumbnails -->
+                        <div class="swiper product-thumbs-swiper">
+                            <div class="swiper-wrapper" id="product-other-imgs-wrapper">
+                                <!-- Thumbnails will be added by JavaScript -->
+                            </div>
                         </div>
 
                     </div>
 
                     <div class="product-description">
                         <div class="basic-details">
-                            <h1 class="product-name"></h1>
+                            <h1 class="product-name">
+                                <button class="read-more-btn" style="display: none; background: none; border: none; color: #007bff; cursor: pointer; padding: 0; margin-left: 5px; font-size: inherit; line-height: inherit; vertical-align: baseline; font-weight: bold;">...Read More</button>
+                            </h1>
                             <div class="rating">
                                 <div class="stars">
                                     <span class="star" data-value="1"></span>
@@ -50,6 +67,7 @@
                         </div>
 
                         <p class="description">
+                            <button class="read-more-desc-btn" style="display: none; background: none; border: none; color: #007bff; cursor: pointer; padding: 0; margin-left: 5px;  font-size: inherit; line-height: inherit; vertical-align: baseline;">...Read More</button>
                         </p>
 
                         <div class="variants">
@@ -114,6 +132,9 @@
 
         <script src="/js/createProduct.js" defer></script>
         <script src="/js/sidebar.js" defer></script>
+
+        <!-- Swiper JS -->
+        <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
         <script src="/js/productView.js" defer></script>
 
 

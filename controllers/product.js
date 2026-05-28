@@ -43,36 +43,18 @@ export const getProductById = async (req, res) => {
 
 export const createProduct = async (req, res) => {
     try {
-        const { name, description, price, category, images, heroImage, rating, variations } = req.body;
-        if (!name || !description || !price || !category) {
+        const { name, description, category } = req.body;
+        if (!name || !description || !category) {
             return res.status(400).json({
                 success: false,
-                message: 'All fields are required'
+                message: 'Product name, description, and category are required'
             });
-        }
-
-        // Validate rating if provided
-        let productRating = 4; // default rating
-        if (rating !== undefined) {
-            const ratingNum = parseFloat(rating);
-            if (ratingNum < 0 || ratingNum > 5) {
-                return res.status(400).json({
-                    success: false,
-                    message: 'Rating must be between 0 and 5'
-                });
-            }
-            productRating = ratingNum;
         }
 
         const newProduct = new product({
             name, 
             description, 
-            price, 
             category, 
-            images: images || [], 
-            heroImage: heroImage || '',
-            rating: productRating,
-            variations: variations || [], 
             seller: req.user.id
         });
         

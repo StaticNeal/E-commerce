@@ -8,6 +8,7 @@ import { connectDB } from './utils/dbConnection.js';
 import pageRoutes from './routes/pageRoutes.js';
 import apiRoutes from './routes/apiRoutes.js';
 import productRoutes from './routes/productRoutes.js';
+import variationRoutes from './routes/variationRoutes.js';
 dotenv.config()
 
 const __filename = fileURLToPath(import.meta.url);
@@ -27,11 +28,13 @@ app.set('view engine', 'ejs');
 // Serve static files
 app.use(express.static(path.join(__dirname, 'public')));
 app.use('/product-images', express.static(path.join(__dirname, 'product-images')));
+app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
 // Routes
 app.use('/', pageRoutes);
 app.use('/api', apiRoutes);
 app.use('/products', productRoutes);
+app.use('/variations', variationRoutes);
 
 const PORT = process.env.PORT || 5000;
 
