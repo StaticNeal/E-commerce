@@ -98,10 +98,73 @@ heroInput.addEventListener('change', function () {
             if (existingHero) existingHero.remove();
 
             createThumbnail(e.target.result, true);
+
+            // Create a variant with the hero image
+            createVariantWithImage(e.target.result);
         }
         reader.readAsDataURL(file);
     }
 });
+
+/**
+ * Creates a variant with the given image
+ */
+function createVariantWithImage(imageSrc) {
+    const variantList = document.querySelector('.varient-list');
+    const variantNameInput = document.getElementById('product-variant-name');
+    
+    if (!variantList) return;
+
+    // Remove existing hero variant if any
+    const existingVariant = variantList.querySelector('[data-is-hero-variant="true"]');
+    if (existingVariant) existingVariant.remove();
+
+    // Create variant item
+    const variantItem = document.createElement('li');
+    variantItem.setAttribute('data-is-hero-variant', 'true');
+    variantItem.className = 'variant-item selected';
+    
+    variantItem.innerHTML = `
+        <img src="${imageSrc}" alt="Variant" class="variant-thumbnail">
+        <button type="button" class="variant-remove-btn">×</button>
+    `;
+
+    // Set variant name to input
+    if (!variantNameInput.value) {
+        variantNameInput.value = 'Original';
+    }
+
+    // Click to select this variant
+    variantItem.addEventListener('click', function (e) {
+        if (e.target.classList.contains('variant-remove-btn')) return;
+
+        // Remove selection from all variants
+        document.querySelectorAll('.variant-item').forEach(item => {
+            item.classList.remove('selected');
+            item.style.borderColor = '#ccc';
+        });
+
+        // Select this variant
+        variantItem.classList.add('selected');
+        variantItem.style.borderColor = '#4cacf5';
+        variantNameInput.value = 'Original';
+    });
+
+    // Remove button
+    const removeBtn = variantItem.querySelector('.variant-remove-btn');
+    removeBtn.addEventListener('click', function (e) {
+        e.stopPropagation();
+        variantItem.remove();
+        variantNameInput.value = '';
+    });
+
+    // Add to list before upload button
+    const uploadButton = variantList.querySelector('#upload-varient');
+    variantList.insertBefore(variantItem, uploadButton);
+
+    // Set as selected
+    variantItem.style.borderColor = '#4cacf5';
+}
 
 
 
