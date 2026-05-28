@@ -1,11 +1,11 @@
 .components {
-    height:100% ;
+    height: 100%;
     width: 100%;
     display: flex;
     /* position: fixed; */
     right: 0;
     bottom: 0;
-  
+
 }
 
 .products {
@@ -114,4 +114,16 @@
     font-weight: 700 !important;
     color: #667eea !important;
     padding: 8px 12px 12px !important;
+}
+
+.product-varient-name-input {
+    color: #131212;
+    font-size: 12px;
+    height: auto;
+    overflow: hidden;
+    width: 100%;
+    padding: 0 12px;
+    border: none;
+    color: #333;
+    border-bottom: 1px solid var(--border-color);
 }

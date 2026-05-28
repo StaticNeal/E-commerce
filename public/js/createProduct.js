@@ -136,3 +136,4 @@ window.addEventListener('load', adjustHeight);
 if (titleInput) titleInput.addEventListener('input', adjustHeight);
 
 
+const varientButton = document.getElementById('upload-varient');
