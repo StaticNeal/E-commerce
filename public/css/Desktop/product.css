@@ -48,131 +48,24 @@
     overflow: hidden;
 }
 
-/* Swiper Gallery Styles */
-.product-hero-swiper {
+/* Product Hero Image */
+.product-hero-image {
     width: 100%;
     max-width: 600px;
-    height: auto;
     aspect-ratio: 1 / 1;
     border-radius: 16px;
     overflow: hidden;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-    cursor: grab;
-    background: transparent;
-}
-
-.product-hero-swiper.swiper-backface-hidden {
-    cursor: grab;
-}
-
-.product-hero-swiper .swiper-wrapper {
-    width: 100%;
-    height: 100%;
-    background: transparent;
-}
-
-.product-hero-swiper .swiper-slide {
     display: flex;
     align-items: center;
     justify-content: center;
-    background: transparent;
-    cursor: grab;
-    width: 100%;
-    height: 100%;
-    flex-shrink: 0;
-    padding: 0;
-    margin: 0;
+    background: #f9f9f9;
 }
 
-.product-hero-swiper .swiper-slide-duplicate {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    background: transparent;
-    width: 100%;
-    height: 100%;
-}
-
-.product-hero-swiper .swiper-slide-duplicate img {
-    width: 100%;
-    height: 100%;
-    object-fit: contain;
-}
-
-.swiper-grabbing .product-hero-swiper,
-.swiper-grabbing .product-hero-swiper .swiper-slide {
-    cursor: grabbing;
-}
-
-.product-hero-swiper img {
+.product-hero-image img {
     width: 100%;
     height: 100%;
     object-fit: contain;
     display: block;
-    flex-shrink: 0;
-    max-width: 100%;
-    max-height: 100%;
-}
-
-.product-hero-swiper .swiper-pagination {
-    position: absolute;
-    bottom: 10px;
-}
-
-.product-hero-swiper .swiper-pagination-bullet {
-    background: rgba(0, 0, 0, 0.5);
-    opacity: 0.8;
-}
-
-.product-hero-swiper .swiper-pagination-bullet-active {
-    background: #006dc0;
-}
-
-.product-hero-swiper .swiper-button-prev,
-.product-hero-swiper .swiper-button-next {
-    color: #333;
-    background: rgba(255, 255, 255, 0.8);
-    width: 40px;
-    height: 40px;
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
-
-.product-hero-swiper .swiper-button-prev:hover,
-.product-hero-swiper .swiper-button-next:hover {
-    background: rgba(255, 255, 255, 1);
-}
-
-/* Thumbnail Swiper */
-.product-thumbs-swiper {
-    width: 100%;
-    max-width: 600px;
-    height: auto;
-    margin-top: 10px;
-}
-
-.product-thumbs-swiper .swiper-slide {
-    height: auto;
-    opacity: 0.5;
-    cursor: pointer;
-    transition: opacity 0.3s ease;
-    border-radius: 8px;
-    overflow: hidden;
-    aspect-ratio: 1 / 1;
-}
-
-.product-thumbs-swiper .swiper-slide-thumb-active {
-    opacity: 1;
-    border: 2px solid #006dc0;
-}
-
-.product-thumbs-swiper img {
-    width: 100%;
-    height: 100%;
-    object-fit: contain;
-    background: #f0f0f0;
 }
 
 #product-hero-img-wrapper.has-image {
@@ -194,6 +87,94 @@
     display: flex;
     gap: 0.4rem;
     flex-grow: grow;
+}
+
+/* Ensure the swiper wrapper matches your styling requirements */
+.product-swiper {
+    width: 100%;
+    height: auto;
+    position: relative;
+    overflow: hidden;
+    /* Prevents slides from spilling out horizontally */
+}
+
+/* Swiper slides styling */
+.product-swiper .swiper-slide {
+    height: 120px;
+    aspect-ratio: 1 / 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #f9f9f9;
+    border: 2px solid #e0e0e0;
+    border-radius: 8px;
+    cursor: pointer;
+}
+
+.product-swiper .swiper-slide.active {
+    border-color: #4cacf5;
+    box-shadow: 0 0 0 3px rgba(76, 172, 245, 0.2);
+}
+
+.product-swiper .swiper-slide:hover {
+    border-color: #a7cfee;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.product-swiper .swiper-slide img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    padding: 4px;
+}
+
+/* Swiper navigation buttons */
+.product-swiper .swiper-button-prev,
+.product-swiper .swiper-button-next {
+    color: #333;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    top: 50%;
+}
+
+.product-swiper .swiper-button-prev:hover,
+.product-swiper .swiper-button-next:hover {
+    color: white;
+}
+
+.product-swiper .swiper-button-prev::after,
+.product-swiper .swiper-button-next::after {
+    font-size: 20px;D
+}
+
+/* Swiper pagination */
+.product-swiper .swiper-pagination {
+    bottom: 10px;
+}
+
+.product-swiper .swiper-pagination-bullet {
+    background: #333;
+    opacity: 0.5;
+}
+
+.product-swiper .swiper-pagination-bullet-active {
+    background: #4cacf5;
+    opacity: 1;
+}
+
+/* Ensure your thumbnails behave properly as swiper slides */
+.thumb-tile {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    box-sizing: border-box;
+}
+
+.thumb-tile img {
+    max-width: 100%;
+    height: auto;
+    object-fit: cover;
 }
 
 .product-other-imgs-wrapper img {
@@ -320,7 +301,6 @@ textarea {
     border-radius: 12px;
     cursor: pointer;
     background-color: #f9f9f9;
-    transition: all 0.3s ease;
 }
 
 /* Hover effect for better UX */
@@ -538,7 +518,6 @@ textarea {
     margin-top: 10px;
 }
 
-/* Base style for both the upload box and the images */
 .thumb-tile,
 .upload-tile {
     width: 80px;
@@ -546,7 +525,6 @@ textarea {
     border-radius: 8px;
     position: relative;
     flex-shrink: 0;
-    /* Prevents boxes from squishing */
 }
 
 .upload-tile {
@@ -661,4 +639,27 @@ textarea {
 .variants.expanded .varient-list {
     overflow: auto;
     max-height: 300px;
+}
+
+/* Ensure the swiper wrapper matches your styling requirements */
+.product-swiper {
+    width: 100%;
+    height: auto;
+    position: relative;
+    overflow: hidden;
+    /* Prevents slides from spilling out horizontally */
+}
+
+/* Ensure your thumbnails behave properly as swiper slides */
+.thumb-tile {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    box-sizing: border-box;
+}
+
+.thumb-tile img {
+    max-width: 100%;
+    height: auto;
+    object-fit: cover;
 }

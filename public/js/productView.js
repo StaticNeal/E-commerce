@@ -4,6 +4,8 @@ const productId = window.location.pathname.split('/product/')[1];
 // Placeholder image as data URL (simple gray square)
 const PLACEHOLDER_IMAGE = 'data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" width="600" height="600"%3E%3Crect fill="%23e0e0e0" width="600" height="600"/%3E%3Ctext x="50%25" y="50%25" dominant-baseline="middle" text-anchor="middle" font-family="Arial" font-size="24" fill="%23999"%3ENo Image%3C/text%3E%3C/svg%3E';
 
+let currentHeroImage = null;
+
 // Helper function to resolve image paths
 function resolveImagePath(imagePath) {
     if (!imagePath) return PLACEHOLDER_IMAGE;
@@ -12,16 +14,46 @@ function resolveImagePath(imagePath) {
     return `/uploads/${imagePath}`;
 }
 
-// Initialize Swiper galleries using the swiperGallery instance
-function initializeSwipers() {
-    if (typeof swiperGallery === 'undefined') {
-        console.error('SwiperGallery not initialized. Make sure swiperInit.js is loaded.');
-        return;
-    }
+// Create swiper slide for thumbnail gallery
+function createThumbnailSlide(imageSrc, isFirst = false) {
+    const slide = document.createElement('div');
+    slide.className = `swiper-slide ${isFirst ? 'active' : ''}`;
     
-    const result = swiperGallery.initializeSwipers();
-    if (!result) {
-        console.error('Failed to initialize swipers');
+    const img = document.createElement('img');
+    img.src = imageSrc;
+    img.alt = 'Product image';
+    img.style.width = '100%';
+    img.style.height = '100%';
+    img.style.objectFit = 'contain';
+    img.onerror = function() {
+        this.src = PLACEHOLDER_IMAGE;
+    };
+    
+    slide.appendChild(img);
+    
+    // Add click handler to update hero image
+    slide.addEventListener('click', function() {
+        updateHeroImage(imageSrc);
+        
+        // Remove active class from all slides
+        document.querySelectorAll('.product-swiper .swiper-slide').forEach(s => {
+            s.classList.remove('active');
+        });
+        
+        // Add active class to clicked slide
+        slide.classList.add('active');
+    });
+    
+    return slide;
+}
+
+// Update hero image when thumbnail is clicked
+function updateHeroImage(imageSrc) {
+    currentHeroImage = imageSrc;
+    const heroWrapper = document.getElementById('product-hero-img-wrapper');
+    if (heroWrapper) {
+        heroWrapper.style.backgroundImage = `url('${imageSrc}')`;
+        heroWrapper.classList.add('has-image');
     }
 }
 
@@ -111,174 +143,32 @@ function displayProductDetails(product, variations) {
 
     console.log('Total images collected:', allImages.length, allImages);
 
-    // Add hero gallery images
-    const heroWrapper = document.getElementById('product-hero-img-wrapper');
-    if (heroWrapper) {
-        heroWrapper.innerHTML = '';
-        console.log(`Adding ${allImages.length} images to hero gallery`);
-        allImages.forEach((image, index) => {
-            const slide = document.createElement('div');
-            slide.className = 'swiper-slide';
-            slide.setAttribute('data-slide-index', index);
-            const img = document.createElement('img');
-            img.src = image.src;
-            img.alt = image.alt;
-            img.loading = 'eager'; // Force eager loading
-            img.onerror = function() { 
-                console.error('Failed to load hero image:', image.src);
-                this.src = PLACEHOLDER_IMAGE; 
-            };
-            img.onload = function() {
-                console.log(`Hero slide ${index} loaded successfully:`, image.src);
-            };
-            console.log(`Creating hero slide ${index}:`, image.src);
-            slide.appendChild(img);
-            heroWrapper.appendChild(slide);
-        });
-        console.log(`Hero gallery now has ${heroWrapper.children.length} slides`);
+    // Display first image in hero by default
+    if (allImages.length > 0) {
+        updateHeroImage(allImages[0].src);
+        console.log('Hero image set to first image:', allImages[0].src);
     }
 
-    // Add thumbs gallery images
+    // Add thumbs gallery images - create swiper slides
     const thumbsWrapper = document.getElementById('product-other-imgs-wrapper');
     if (thumbsWrapper) {
         thumbsWrapper.innerHTML = '';
-        console.log(`Adding ${allImages.length} images to thumbs gallery`);
+        console.log(`Loading ${allImages.length} thumbnail images into Swiper`);
         allImages.forEach((image, index) => {
-            const slide = document.createElement('div');
-            slide.className = 'swiper-slide';
-            slide.setAttribute('data-slide-index', index);
-            const img = document.createElement('img');
-            img.src = image.src;
-            img.alt = image.alt;
-            img.loading = 'eager'; // Force eager loading
-            img.onerror = function() { 
-                console.error('Failed to load thumb image:', image.src);
-                this.src = PLACEHOLDER_IMAGE; 
-            };
-            img.onload = function() {
-                console.log(`Thumb slide ${index} loaded successfully:`, image.src);
-            };
-            img.style.cursor = 'pointer';
-            console.log(`Creating thumb slide ${index}:`, image.src);
-            slide.appendChild(img);
-            thumbsWrapper.appendChild(slide);
+            const thumbSlide = createThumbnailSlide(image.src, index === 0);
+            thumbsWrapper.appendChild(thumbSlide);
+            console.log(`Created thumbnail slide ${index}:`, image.src);
         });
-        console.log(`Thumbs gallery now has ${thumbsWrapper.children.length} slides`);
+        console.log(`Total thumbnails created: ${allImages.length}`);
+        
+        // Initialize Swiper after slides are added
+        if (typeof swiperGallery !== 'undefined' && swiperGallery && window.Swiper) {
+            console.log('Initializing Swiper gallery...');
+            swiperGallery.initializeSwipers();
+        } else {
+            console.warn('Swiper library or swiperGallery not ready');
+        }
     }
-
-    // Initialize Swiper after images are loaded
-    setTimeout(() => {
-        if (allImages.length === 0) {
-            console.warn('No images available for this product');
-            return;
-        }
-        
-        // Wait for images to load before initializing Swiper
-        const images = document.querySelectorAll('.product-hero-swiper img, .product-thumbs-swiper img');
-        console.log(`Found ${images.length} images in swiper containers`);
-        
-        if (images.length === 0) {
-            console.error('No image elements found in Swiper containers');
-            return;
-        }
-        
-        let loadedCount = 0;
-        let timeoutId = null;
-        
-        const checkAllLoaded = () => {
-            loadedCount++;
-            console.log(`Image loaded: ${loadedCount}/${images.length}`);
-            
-            if (loadedCount === images.length) {
-                clearTimeout(timeoutId);
-                // Give browser time to render all images
-                setTimeout(() => {
-                    console.log('All images loaded, initializing swipers');
-                    initializeSwipers();
-                    
-                    // Force layout recalculation
-                    document.querySelector('.product-hero-swiper')?.offsetHeight;
-                    document.querySelector('.product-thumbs-swiper')?.offsetHeight;
-                    
-                    // Update swiper after initialization
-                    if (typeof swiperGallery !== 'undefined') {
-                        setTimeout(() => {
-                            swiperGallery.updateSwiper();
-                            
-                            // Get gallery swiper and rebuild it
-                            const gallerySwiper = swiperGallery.getGallerySwiper();
-                            const thumbsSwiper = swiperGallery.getThumbsSwiper();
-                            
-                            if (gallerySwiper && typeof gallerySwiper.slideReset === 'function') {
-                                gallerySwiper.slideReset();
-                            }
-                            if (thumbsSwiper && typeof thumbsSwiper.slideReset === 'function') {
-                                thumbsSwiper.slideReset();
-                            }
-                        }, 100);
-                    }
-                }, 200);
-            }
-        };
-        
-        // Check if images are already loaded
-        images.forEach((img, idx) => {
-            if (img.complete && img.naturalHeight !== 0) {
-                console.log(`Image ${idx} already loaded`);
-                loadedCount++;
-            } else {
-                img.addEventListener('load', checkAllLoaded);
-                img.addEventListener('error', () => {
-                    console.warn(`Image ${idx} failed to load, using placeholder`);
-                    checkAllLoaded();
-                });
-            }
-        });
-        
-        // If all images are already loaded
-        if (loadedCount === images.length) {
-            setTimeout(() => {
-                console.log('All images already loaded, initializing swipers');
-                initializeSwipers();
-                
-                // Force layout recalculation
-                document.querySelector('.product-hero-swiper')?.offsetHeight;
-                document.querySelector('.product-thumbs-swiper')?.offsetHeight;
-                
-                // Update swiper after initialization
-                if (typeof swiperGallery !== 'undefined') {
-                    setTimeout(() => {
-                        swiperGallery.updateSwiper();
-                        
-                        // Get gallery swiper and rebuild it
-                        const gallerySwiper = swiperGallery.getGallerySwiper();
-                        const thumbsSwiper = swiperGallery.getThumbsSwiper();
-                        
-                        if (gallerySwiper && typeof gallerySwiper.slideReset === 'function') {
-                            gallerySwiper.slideReset();
-                        }
-                        if (thumbsSwiper && typeof thumbsSwiper.slideReset === 'function') {
-                            thumbsSwiper.slideReset();
-                        }
-                    }, 100);
-                }
-            }, 100);
-        }
-        
-        // Fallback timeout: initialize after max 5 seconds
-        timeoutId = setTimeout(() => {
-            console.warn('Image load timeout reached, initializing swipers anyway');
-            if (loadedCount > 0) {
-                initializeSwipers();
-                
-                if (typeof swiperGallery !== 'undefined') {
-                    setTimeout(() => {
-                        swiperGallery.updateSwiper();
-                    }, 200);
-                }
-            }
-        }, 5000);
-    }, 100);
 
     // Display product name
     const productName = document.querySelector('.product-name');

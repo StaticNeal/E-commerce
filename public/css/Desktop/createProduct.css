@@ -44,7 +44,7 @@
     /* Hides the default "No file chosen" text */
     color: transparent;
     position: relative;
-    overflow: hidden;
+     ;
 }
 
 #product-hero-img-wrapper img {
@@ -134,7 +134,7 @@
     color: #333;
     resize: none;
     /* User can't manually drag it */
-    overflow: hidden;
+     ;
     padding: 0.4rem;
     border-radius: 8px;
     cursor: text;
@@ -215,7 +215,7 @@
     border-top: none;
     border-left: none;
     border-right: none;
-    overflow: hidden;
+     ;
 }
 
 .product-price {
@@ -311,7 +311,7 @@ textarea {
     gap: 0.8rem;
     list-style: none;
     padding: 0.8rem;
-    overflow: hidden;
+     ;
     scrollbar-width: thin;
 
 }
@@ -353,7 +353,7 @@ textarea {
     align-items: center;
     justify-content: center;
     position: relative;
-    overflow: hidden;
+     ;
     flex-shrink: 0;
     transition: border-color 0.2s;
 }
@@ -567,7 +567,7 @@ textarea {
     display: flex;
     align-items: center;
     justify-content: center;
-    overflow: hidden;
+     ;
     border-radius: 8px;
 }
 

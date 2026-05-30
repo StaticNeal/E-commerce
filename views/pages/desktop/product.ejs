@@ -9,9 +9,7 @@
     <link rel="stylesheet" href="/css/generic.css">
     <link rel="stylesheet" href="/css/Desktop/product.css">
     <link rel="stylesheet" href="/css/Desktop/index.css">
-
-    <!-- Swiper CSS -->
-    <link rel="stylesheet" href="/vendor/swiper/swiper-bundle.min.css" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@12/swiper-bundle.min.css" />
 </head>
 
 
@@ -26,23 +24,17 @@
 
                     <div class="product-showcase">
 
-                        <!-- Swiper Hero Images -->
-                        <div class="swiper product-hero-swiper">
-                            <div class="swiper-wrapper" id="product-hero-img-wrapper">
-                                <!-- Images will be added by JavaScript -->
-                            </div>
-
-                            <div class="swiper-pagination"></div>
-                            <div class="swiper-button-prev"></div>
-                            <div class="swiper-button-next"></div>
+                        <div id="product-hero-img-wrapper" class="product-hero-image">
+                            <!-- Main image will be added by JavaScript -->
                         </div>
 
-
-                        <!-- Swiper Thumbnails -->
-                        <div class="swiper product-thumbs-swiper">
+                        <div class="swiper product-swiper">
                             <div class="swiper-wrapper" id="product-other-imgs-wrapper">
-                                <!-- Thumbnails will be added by JavaScript -->
                             </div>
+
+                            <div class="swiper-button-next"></div>
+                            <div class="swiper-button-prev"></div>
+
                         </div>
 
                     </div>
@@ -50,7 +42,9 @@
                     <div class="product-description">
                         <div class="basic-details">
                             <h1 class="product-name">
-                                <button class="read-more-btn" style="display: none; background: none; border: none; color: #007bff; cursor: pointer; padding: 0; margin-left: 5px; font-size: inherit; line-height: inherit; vertical-align: baseline; font-weight: bold;">...Read More</button>
+                                <button class="read-more-btn"
+                                    style="display: none; background: none; border: none; color: #007bff; cursor: pointer; padding: 0; margin-left: 5px; font-size: inherit; line-height: inherit; vertical-align: baseline; font-weight: bold;">...Read
+                                    More</button>
                             </h1>
                             <div class="rating">
                                 <div class="stars">
@@ -67,7 +61,9 @@
                         </div>
 
                         <p class="description">
-                            <button class="read-more-desc-btn" style="display: none; background: none; border: none; color: #007bff; cursor: pointer; padding: 0; margin-left: 5px;  font-size: inherit; line-height: inherit; vertical-align: baseline;">...Read More</button>
+                            <button class="read-more-desc-btn"
+                                style="display: none; background: none; border: none; color: #007bff; cursor: pointer; padding: 0; margin-left: 5px;  font-size: inherit; line-height: inherit; vertical-align: baseline;">...Read
+                                More</button>
                         </p>
 
                         <div class="variants">
@@ -130,14 +126,10 @@
 
 
 
+        <script src="https://cdn.jsdelivr.net/npm/swiper@12/swiper-bundle.min.js"></script>
+        <script src="/js/swiperInit.js" defer></script>
         <script src="/js/createProduct.js" defer></script>
         <script src="/js/sidebar.js" defer></script>
-
-        <!-- Swiper JS -->
-        <script src="/vendor/swiper/swiper-bundle.min.js" defer></script>
-        <!-- Swiper Gallery Initialization -->
-        <script src="/js/swiperInit.js" defer></script>
-        <!-- Product View Logic -->
         <script src="/js/productView.js" defer></script>
 
 
