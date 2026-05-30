@@ -16,17 +16,40 @@
     <%- include('../../components/navbar') %>
         <main>
 
-            <div class="products-created">
-                <div class="create-product"></div>
+            <div class="products-created-container">
+                <div class="created-product">
+                    <div class="product-image">
+                        <img src="/tempimages/vasewhite(1).png" alt="">
 
-            </div>
-            <div class="components">
-                <div class="products"></div>
-                <div class="others hidden">
-                    <%- include('../../components/cart') %>
-                        <%- include('../../components/settings') %>
+                    </div>
+
+
+                    <div class="product-details">
+                        <h2 class="product-name">Vase</h2>
+                        <p class="description">
+                            lorem ipsum dolor sit amet consectetur adipisicing elit. Soluta libero quaerat officiis
+                            quis,
+                        </p>
+
+                        <div class="rating" style="padding: 0;">
+                            <span class="star">★</span>
+                            <span class="star">★</span>
+                            <span class="star">★</span>
+                            <span class="star">★</span>
+                            <span class="star">★</span>
+                        </div>
+
+                        <div class="price" style="padding: 0px 0px 0px !important; margin-top: 1.2rem;">$29.99</div>
+                    </div>
+
                 </div>
-            </div>
+                <div class="components">
+                    <div class="products"></div>
+                    <div class="others hidden">
+                        <%- include('../../components/cart') %>
+                            <%- include('../../components/settings') %>
+                    </div>
+                </div>
         </main>
 
 
