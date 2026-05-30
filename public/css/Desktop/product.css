@@ -135,11 +135,14 @@
     height: 40px;
     border-radius: 50%;
     top: 50%;
+    background: rgba(255, 255, 255, 0.4);
 }
 
 .product-swiper .swiper-button-prev:hover,
 .product-swiper .swiper-button-next:hover {
     color: white;
+    background: rgba(22, 22, 22, 0.4);
+
 }
 
 .product-swiper .swiper-button-prev::after,

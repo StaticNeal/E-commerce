@@ -9,19 +9,26 @@
     </title>
     <link rel="stylesheet" href="/css/Desktop/index.css">
     <link rel="stylesheet" href="/css/generic.css">
+    <link rel="stylesheet" href="/css/Desktop/manageproducts.css">
 </head>
 
 <body>
     <%- include('../../components/navbar') %>
-        <main></main>
+        <main>
 
-        <div class="components">
-            <div class="products"></div>
-            <div class="others">
-                <%- include('../../components/cart') %>
-                    <%- include('../../components/settings') %>
+            <div class="products-created">
+                <div class="create-product"></div>
+
             </div>
-        </div>
+            <div class="components">
+                <div class="products"></div>
+                <div class="others hidden">
+                    <%- include('../../components/cart') %>
+                        <%- include('../../components/settings') %>
+                </div>
+            </div>
+        </main>
+
 
 
 
