@@ -58,7 +58,6 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    background: #f9f9f9;
 }
 
 .product-hero-image img {
@@ -145,7 +144,7 @@
 
 .product-swiper .swiper-button-prev::after,
 .product-swiper .swiper-button-next::after {
-    font-size: 20px;D
+    font-size: 20px;
 }
 
 /* Swiper pagination */
