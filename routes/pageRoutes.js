@@ -36,6 +36,19 @@ router.get('/create-product', (req, res) => {
     }
 });
 
+router.get('/manage-products', (req, res) => {
+    const userAgent = req.headers['user-agent'];
+
+    if (/mobile|android|iphone/i.test(userAgent)) {
+
+        res.render('pages/mobile/manageproducts', { title: 'Manage Products' });
+    } else {
+
+        res.render('pages/desktop/manageproducts', { title: 'Manage Products' });
+    }
+});
+
+
 router.get('/product/:id', (req, res) => {
     const userAgent = req.headers['user-agent'];
     const { id } = req.params;

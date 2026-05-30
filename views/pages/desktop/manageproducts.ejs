@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>
+        <%= title %>
+    </title>
+    <link rel="stylesheet" href="/css/Desktop/index.css">
+    <link rel="stylesheet" href="/css/generic.css">
+</head>
+
+<body>
+    <%- include('../../components/navbar') %>
+        <main></main>
+
+        <div class="components">
+            <div class="products"></div>
+            <div class="others">
+                <%- include('../../components/cart') %>
+                    <%- include('../../components/settings') %>
+            </div>
+        </div>
+
+
+
+        <script src="/js/sidebar.js" defer></script>
+        <script>
+            if (document.readyState === 'loading') {
+                document.addEventListener('DOMContentLoaded', () => {
+                    const manageProductBtn = document.querySelector('.manage-product-btn');
+                    if (manageProductBtn) {
+                        manageProductBtn.classList.add('active-menu-item');
+                    }
+                });
+            } else {
+                const manageProductBtn = document.querySelector('.manage-product-btn');
+                if (manageProductBtn) {
+                    manageProductBtn.classList.add('active-menu-item');
+                }
+            }
+        </script>
+
+</body>
+
+</html>
