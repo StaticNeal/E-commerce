@@ -50,14 +50,14 @@
 .card {
     background: white;
     border-radius: 8px;
-    overflow: hidden;
+    /* overflow: hidden; */
     transition: all 0.3s ease;
     cursor: pointer;
     border: 2px solid #f0f0f0;
     display: flex;
     flex-direction: column;
     /* height: 100%; */
-    height: 360px;
+    height: 320px;
 }
 
 .card img {
@@ -70,24 +70,20 @@
     display: block;
 }
 
-.card h2 {
-    font-size: 16px;
-    font-weight: 600;
-    padding: 12px 12px 8px;
-    color: #333;
-    line-height: 1.3;
-    display: -webkit-box;
-    -webkit-line-clamp: 1;
-    -webkit-box-orient: vertical;
-    overflow: hidden;
-}
+
 
 .card p {
     padding: 0 12px 8px;
     color: #666;
-    font-size: 12px;
-    line-height: 1.4;
+    font-size: 14px;
     flex-grow: 1;
+    padding: 12px;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    /* Change to 1 if you only want a single line */
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 
 .card p:not(.price) {
@@ -116,7 +112,8 @@
     padding: 8px 12px 12px !important;
 }
 
-.product-varient-name-input, .product-varient-type-input {
+.product-varient-name-input,
+.product-varient-type-input {
     color: #131212;
     font-size: 12px;
     height: auto;
@@ -128,6 +125,7 @@
     color: #333;
     border-bottom: 1px solid var(--border-color);
 }
-#product-variant-type{
+
+#product-variant-type {
     font-size: 18px;
 }

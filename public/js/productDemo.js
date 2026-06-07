@@ -2,10 +2,17 @@
 
 // Function to truncate description
 function truncateDescription(text, maxLength = 55) {
-    if (text.length > maxLength) {
-        return text.substring(0, maxLength) + '...';
+    if (!text) return '';
+
+    // 1. Clean up any accidental double/triple spaces inside the string
+    const cleanedText = text.replace(/\s+/g, ' ').trim();
+
+    if (cleanedText.length > maxLength) {
+        // 2. Cut to maxLength and trim trailing spaces/punctuation so it looks clean before '...'
+        return cleanedText.substring(0, maxLength).replace(/[\s,–\-]+$/, '') + '...';
     }
-    return text;
+
+    return cleanedText;
 }
 
 // Function to render a single product card with first available variant
@@ -13,22 +20,22 @@ function renderProductCard(product, variant) {
     // Use variant data if available, otherwise use product defaults
     const rating = variant ? (variant.rating && variant.rating > 0 ? Math.round(variant.rating) : 4) : 4;
     const price = variant ? variant.price : 0;
-    
+
     // Handle image with fallback
     let image = null;
     if (variant) {
         if (variant.heroImage) {
             image = variant.heroImage.startsWith('http') || variant.heroImage.startsWith('/uploads/')
-                ? variant.heroImage 
+                ? variant.heroImage
                 : `/uploads/${variant.heroImage}`;
         } else if (variant.images && variant.images.length > 0) {
             const firstImg = variant.images[0];
             image = firstImg.startsWith('http') || firstImg.startsWith('/uploads/')
-                ? firstImg 
+                ? firstImg
                 : `/uploads/${firstImg}`;
         }
     }
-    
+
     // Fallback placeholder - SVG data URL
     if (!image) {
         image = 'data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" width="250" height="250"%3E%3Crect fill="%23e0e0e0" width="250" height="250"/%3E%3Ctext x="50%25" y="50%25" dominant-baseline="middle" text-anchor="middle" font-family="Arial" font-size="16" fill="%23999"%3ENo Image%3C/text%3E%3C/svg%3E';
@@ -40,12 +47,13 @@ function renderProductCard(product, variant) {
         .join('');
 
     const truncatedDescription = truncateDescription(product.description);
+    const truncatedName = truncateDescription(product.name, 45);
 
     return `
         <div class="card" data-product-id="${product._id}">
             <img src="${image}" alt="${product.name}" onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%22250%22 height=%22250%22%3E%3Crect fill=%22%23e0e0e0%22 width=%22250%22 height=%22250%22/%3E%3Ctext x=%2250%25%22 y=%2250%25%22 dominant-baseline=%22middle%22 text-anchor=%22middle%22 font-family=%22Arial%22 font-size=%2216%22 fill=%22%23999%22%3EImage Error%3C/text%3E%3C/svg%3E'">
-            <h2>${product.name}</h2>
-            <p>${truncatedDescription}</p>
+
+            <p>${truncatedName}</p>
             <div class="rating">
                 ${stars}
             </div>
@@ -59,7 +67,7 @@ async function fetchProductsWithVariations() {
     try {
         const response = await fetch('/products');
         const result = await response.json();
-        
+
         if (result.success && result.data && Array.isArray(result.data)) {
             // Get all products with their variations populated
             const productsWithVariations = await Promise.all(
@@ -67,7 +75,7 @@ async function fetchProductsWithVariations() {
                     try {
                         const variationResponse = await fetch(`/variations/product/${product._id}`);
                         const variationResult = await variationResponse.json();
-                        
+
                         return {
                             ...product,
                             variations: (variationResult.success && variationResult.data) ? variationResult.data : []
@@ -81,7 +89,7 @@ async function fetchProductsWithVariations() {
                     }
                 })
             );
-            
+
             return productsWithVariations;
         } else {
             console.warn('No products found from API');
@@ -96,7 +104,7 @@ async function fetchProductsWithVariations() {
 // Function to load and display all products
 async function loadProducts() {
     const productsContainer = document.querySelector('.products');
-    
+
     if (!productsContainer) {
         console.error('Products container not found');
         return;
@@ -116,10 +124,10 @@ async function loadProducts() {
     // Render all products with their first available variant
     products.forEach(product => {
         // Use first variant if available
-        const firstVariant = product.variations && product.variations.length > 0 
-            ? product.variations[0] 
+        const firstVariant = product.variations && product.variations.length > 0
+            ? product.variations[0]
             : null;
-        
+
         const cardHTML = renderProductCard(product, firstVariant);
         productsContainer.insertAdjacentHTML('beforeend', cardHTML);
     });
@@ -132,7 +140,7 @@ async function loadProducts() {
 function attachProductClickHandlers() {
     const cards = document.querySelectorAll('.card');
     cards.forEach(card => {
-        card.addEventListener('click', function() {
+        card.addEventListener('click', function () {
             const productId = this.getAttribute('data-product-id');
             if (productId) {
                 window.location.href = `/product/${productId}`;

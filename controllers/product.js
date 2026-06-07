@@ -7,14 +7,14 @@ import { fileURLToPath } from 'url';
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
-// Max file size: 50MB
+
 const MAX_FILE_SIZE = 50 * 1024 * 1024;
 
 /**
  * Validates image size from base64 string
  */
 function validateBase64ImageSize(base64String) {
-    // Base64 encoded size is approximately 4/3 of the original size
+    
     const sizeInBytes = Buffer.byteLength(base64String, 'utf8') * (3 / 4);
     return sizeInBytes <= MAX_FILE_SIZE;
 }
@@ -24,28 +24,28 @@ function validateBase64ImageSize(base64String) {
  */
 function saveBase64Image(base64String, filename = null) {
     try {
-        // Generate unique filename if not provided
+        
         if (!filename) {
             filename = `${Date.now()}-${Math.random().toString(36).substr(2, 9)}.jpg`;
         }
 
-        // Extract base64 data (remove data URL prefix if present)
+        
         let base64Data = base64String;
         if (base64String.includes(',')) {
             base64Data = base64String.split(',')[1];
         }
 
-        // Create uploads directory if it doesn't exist
+        
         const uploadsDir = path.join(__dirname, '../uploads');
         if (!fs.existsSync(uploadsDir)) {
             fs.mkdirSync(uploadsDir, { recursive: true });
         }
 
-        // Save file
+        
         const filepath = path.join(uploadsDir, filename);
         fs.writeFileSync(filepath, Buffer.from(base64Data, 'base64'));
 
-        // Return just the filename (path prefix will be added by frontend)
+        
         return filename;
     } catch (error) {
         console.error('Error saving image:', error);
@@ -94,11 +94,40 @@ export const getProductById = async (req, res) => {
     }
 }
 
+export const getUserProducts = async (req, res) => {
+    try {
+        const userId = req.user.id;
+        const userProducts = await product.find({ seller: userId }).populate('seller', 'username email');
+        
+        // Fetch variations for each product
+        const productsWithVariations = await Promise.all(
+            userProducts.map(async (prod) => {
+                const variants = await variation.find({ product: prod._id });
+                return {
+                    ...prod.toObject(),
+                    variations: variants
+                };
+            })
+        );
+        
+        res.status(200).json({
+            success: true,
+            data: productsWithVariations
+        });
+    } catch (error) {
+        res.status(500).json({
+            success: false,
+            message: 'Error fetching user products',
+            error: error.message
+        });
+    }
+}
+
 export const createProduct = async (req, res) => {
     try {
         const { title, description, variantType, variants } = req.body;
         
-        // Validate required fields
+        
         if (!title || !description) {
             return res.status(400).json({
                 success: false,
@@ -113,9 +142,9 @@ export const createProduct = async (req, res) => {
             });
         }
 
-        // Validate image sizes
+        
         for (const variant of variants) {
-            // Check both single image and array of images
+            
             const imagesToCheck = variant.images || (variant.image ? [variant.image] : []);
             for (const img of imagesToCheck) {
                 if (img && !validateBase64ImageSize(img)) {
@@ -127,7 +156,7 @@ export const createProduct = async (req, res) => {
             }
         }
 
-        // Create the product
+        
         const newProduct = new product({
             name: title,
             description: description,
@@ -137,7 +166,7 @@ export const createProduct = async (req, res) => {
         
         await newProduct.save();
 
-        // Create variants for this product
+        
         const variantsData = [];
         for (const variant of variants) {
             const imagePaths = [];
@@ -150,7 +179,7 @@ export const createProduct = async (req, res) => {
                 hasSingleImage: !!variant.image
             });
             
-            // Handle multiple images array
+            
             if (variant.images && Array.isArray(variant.images) && variant.images.length > 0) {
                 for (const img of variant.images) {
                     if (img) {
@@ -158,7 +187,7 @@ export const createProduct = async (req, res) => {
                             const imagePath = saveBase64Image(img);
                             imagePaths.push(imagePath);
                             console.log('Saved image:', imagePath);
-                            // First image is hero
+                            
                             if (!heroImagePath) {
                                 heroImagePath = imagePath;
                             }
@@ -168,7 +197,7 @@ export const createProduct = async (req, res) => {
                     }
                 }
             }
-            // Handle single image (backward compatibility)
+            
             else if (variant.image) {
                 try {
                     heroImagePath = saveBase64Image(variant.image);
@@ -184,7 +213,7 @@ export const createProduct = async (req, res) => {
                 }
             }
             
-            // Handle explicit heroImage (if no images were processed above)
+            
             if (variant.heroImage && !heroImagePath) {
                 try {
                     heroImagePath = saveBase64Image(variant.heroImage);
