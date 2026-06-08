@@ -66,20 +66,32 @@ function createProductElement(product) {
         ? `$${firstVariation.price.toFixed(2)}`
         : 'N/A';
 
+    const variantType = firstVariation?.type || firstVariation?.name || 'Standard';
+
     const div = document.createElement('div');
     div.className = 'created-product';
+    div.style.cursor = 'pointer';
     div.innerHTML = `
         <div class="product-image">
             <img src="${heroImage}" alt="${product.name}">
         </div>
         <div class="product-details">
             <h2 class="product-name">${product.name}</h2>
-               <h2 class="description">${product.description}</h2>
+         
+            <p class="description">
+                ${product.description}
+            </p>
             <div class="price" style="padding: 0px 0px 0px !important; margin-top: 1.2rem;">
                 ${price}
             </div>
         </div>
     `;
+    
+    // Add click event to open product for editing
+    div.addEventListener('click', function() {
+        window.location.href = `/create-product?id=${product._id}`;
+    });
+    
     return div;
 }
 

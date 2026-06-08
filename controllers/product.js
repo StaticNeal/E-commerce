@@ -81,9 +81,15 @@ export const getProductById = async (req, res) => {
             });
         }
         
+        // Fetch variations for the product
+        const variants = await variation.find({ product: id });
+        
         res.status(200).json({
             success: true,
-            data: productData
+            data: {
+                ...productData.toObject(),
+                variations: variants
+            }
         });
     } catch (error) {
         res.status(500).json({
@@ -259,6 +265,150 @@ export const createProduct = async (req, res) => {
         res.status(500).json({
             success: false,
             message: 'Error creating product',
+            error: error.message
+        });
+    }
+}
+
+export const updateProduct = async (req, res) => {
+    try {
+        const { id } = req.params;
+        const { title, description, variantType, variants } = req.body;
+
+        // Validate required fields
+        if (!title || !description) {
+            return res.status(400).json({
+                success: false,
+                message: 'Product title and description are required'
+            });
+        }
+
+        if (!variants || variants.length === 0) {
+            return res.status(400).json({
+                success: false,
+                message: 'At least one variant is required'
+            });
+        }
+
+        // Find and update product
+        const existingProduct = await product.findById(id);
+        if (!existingProduct) {
+            return res.status(404).json({
+                success: false,
+                message: 'Product not found'
+            });
+        }
+
+        // Check if user owns the product
+        if (existingProduct.seller.toString() !== req.user.id) {
+            return res.status(403).json({
+                success: false,
+                message: 'Unauthorized to update this product'
+            });
+        }
+
+        // Update product basic info
+        existingProduct.name = title;
+        existingProduct.description = description;
+        existingProduct.category = variantType || 'General';
+        await existingProduct.save();
+
+        // Update variants
+        const updatedVariants = [];
+        for (const variant of variants) {
+            // Check image sizes
+            const imagesToCheck = variant.images || (variant.image ? [variant.image] : []);
+            for (const img of imagesToCheck) {
+                if (img && typeof img === 'string' && img.includes('base64') && !validateBase64ImageSize(img)) {
+                    return res.status(413).json({
+                        success: false,
+                        message: 'Image size exceeds maximum limit of 50MB'
+                    });
+                }
+            }
+
+            let existingVariant = await variation.findOne({ product: id });
+
+            if (!existingVariant) {
+                // Create new variant if doesn't exist
+                existingVariant = new variation({
+                    product: id
+                });
+            }
+
+            // Process images
+            const imagePaths = [];
+            let heroImagePath = null;
+
+            // Handle new images (base64)
+            if (variant.images && Array.isArray(variant.images)) {
+                for (const img of variant.images) {
+                    if (img && typeof img === 'string') {
+                        if (img.includes('base64')) {
+                            // New image - save it
+                            try {
+                                const imagePath = saveBase64Image(img);
+                                imagePaths.push(imagePath);
+                                if (!heroImagePath) {
+                                    heroImagePath = imagePath;
+                                }
+                            } catch (error) {
+                                console.error('Error saving image:', error);
+                            }
+                        } else if (img.includes('/uploads/')) {
+                            // Existing image - keep it
+                            const filename = img.split('/uploads/')[1];
+                            imagePaths.push(filename);
+                            if (!heroImagePath) {
+                                heroImagePath = filename;
+                            }
+                        }
+                    }
+                }
+            }
+
+            // Handle hero image
+            if (variant.heroImage) {
+                if (typeof variant.heroImage === 'string' && variant.heroImage.includes('/uploads/')) {
+                    heroImagePath = variant.heroImage.split('/uploads/')[1];
+                } else if (typeof variant.heroImage === 'string' && variant.heroImage.includes('base64')) {
+                    try {
+                        heroImagePath = saveBase64Image(variant.heroImage);
+                        if (!imagePaths.includes(heroImagePath)) {
+                            imagePaths.push(heroImagePath);
+                        }
+                    } catch (error) {
+                        console.error('Error saving hero image:', error);
+                    }
+                }
+            }
+
+            // Update variant
+            existingVariant.type = variantType || '';
+            existingVariant.name = variantType || 'Default';
+            existingVariant.value = variant.type || 'Original';
+            existingVariant.price = variant.price || 0;
+            existingVariant.images = imagePaths;
+            existingVariant.heroImage = heroImagePath || '';
+            existingVariant.otherImages = imagePaths.filter(img => img !== heroImagePath);
+
+            await existingVariant.save();
+            updatedVariants.push(existingVariant);
+        }
+
+        res.status(200).json({
+            success: true,
+            message: 'Product updated successfully',
+            data: {
+                product: existingProduct,
+                variants: updatedVariants
+            }
+        });
+    } catch (error) {
+        console.error('Error updating product:', error);
+        res.status(500).json({
+            success: false,
+            message: 'Error updating product',
             error: error.message
         });
     }
