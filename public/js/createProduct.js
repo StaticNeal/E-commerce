@@ -570,5 +570,49 @@ document.addEventListener('DOMContentLoaded', function () {
     const productId = getProductIdFromUrl();
     if (productId) {
         loadProductForEditing(productId);
+        
+        // Show delete button only when editing
+        const deleteBtn = document.querySelector('.add-to-wishlist-btn');
+        if (deleteBtn) {
+            deleteBtn.style.display = 'block';
+            deleteBtn.addEventListener('click', function(e) {
+                e.preventDefault();
+                deleteCurrentProduct(productId);
+            });
+        }
+    } else {
+        // Hide delete button when creating new product
+        const deleteBtn = document.querySelector('.add-to-wishlist-btn');
+        if (deleteBtn) {
+            deleteBtn.style.display = 'none';
+        }
     }
 });
+
+// Delete product handler
+async function deleteCurrentProduct(productId) {
+    if (!confirm('Are you sure you want to delete this product? This action cannot be undone.')) {
+        return;
+    }
+
+    try {
+        const response = await fetch(`/products/${productId}`, {
+            method: 'DELETE',
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        });
+
+        const result = await response.json();
+
+        if (result.success) {
+            alert('Product deleted successfully!');
+            window.location.href = '/manage-products';
+        } else {
+            alert('Error deleting product: ' + (result.message || 'Unknown error'));
+        }
+    } catch (error) {
+        console.error('Error deleting product:', error);
+        alert('Error deleting product: ' + error.message);
+    }
+}

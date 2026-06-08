@@ -14,7 +14,7 @@ const MAX_FILE_SIZE = 50 * 1024 * 1024;
  * Validates image size from base64 string
  */
 function validateBase64ImageSize(base64String) {
-    
+
     const sizeInBytes = Buffer.byteLength(base64String, 'utf8') * (3 / 4);
     return sizeInBytes <= MAX_FILE_SIZE;
 }
@@ -24,28 +24,28 @@ function validateBase64ImageSize(base64String) {
  */
 function saveBase64Image(base64String, filename = null) {
     try {
-        
+
         if (!filename) {
             filename = `${Date.now()}-${Math.random().toString(36).substr(2, 9)}.jpg`;
         }
 
-        
+
         let base64Data = base64String;
         if (base64String.includes(',')) {
             base64Data = base64String.split(',')[1];
         }
 
-        
+
         const uploadsDir = path.join(__dirname, '../uploads');
         if (!fs.existsSync(uploadsDir)) {
             fs.mkdirSync(uploadsDir, { recursive: true });
         }
 
-        
+
         const filepath = path.join(uploadsDir, filename);
         fs.writeFileSync(filepath, Buffer.from(base64Data, 'base64'));
 
-        
+
         return filename;
     } catch (error) {
         console.error('Error saving image:', error);
@@ -73,17 +73,17 @@ export const getProductById = async (req, res) => {
     try {
         const { id } = req.params;
         const productData = await product.findById(id).populate('seller', 'username email');
-        
+
         if (!productData) {
             return res.status(404).json({
                 success: false,
                 message: 'Product not found'
             });
         }
-        
+
         // Fetch variations for the product
         const variants = await variation.find({ product: id });
-        
+
         res.status(200).json({
             success: true,
             data: {
@@ -104,7 +104,7 @@ export const getUserProducts = async (req, res) => {
     try {
         const userId = req.user.id;
         const userProducts = await product.find({ seller: userId }).populate('seller', 'username email');
-        
+
         // Fetch variations for each product
         const productsWithVariations = await Promise.all(
             userProducts.map(async (prod) => {
@@ -115,7 +115,7 @@ export const getUserProducts = async (req, res) => {
                 };
             })
         );
-        
+
         res.status(200).json({
             success: true,
             data: productsWithVariations
@@ -132,15 +132,15 @@ export const getUserProducts = async (req, res) => {
 export const createProduct = async (req, res) => {
     try {
         const { title, description, variantType, variants } = req.body;
-        
-        
+
+
         if (!title || !description) {
             return res.status(400).json({
                 success: false,
                 message: 'Product title and description are required'
             });
         }
-        
+
         if (!variants || variants.length === 0) {
             return res.status(400).json({
                 success: false,
@@ -148,9 +148,9 @@ export const createProduct = async (req, res) => {
             });
         }
 
-        
+
         for (const variant of variants) {
-            
+
             const imagesToCheck = variant.images || (variant.image ? [variant.image] : []);
             for (const img of imagesToCheck) {
                 if (img && !validateBase64ImageSize(img)) {
@@ -162,30 +162,30 @@ export const createProduct = async (req, res) => {
             }
         }
 
-        
+
         const newProduct = new product({
             name: title,
             description: description,
             category: variantType || 'General',
             seller: req.user.id
         });
-        
+
         await newProduct.save();
 
-        
+
         const variantsData = [];
         for (const variant of variants) {
             const imagePaths = [];
             let heroImagePath = null;
-            
-            console.log('Processing variant:', { 
+
+            console.log('Processing variant:', {
                 hasImages: Array.isArray(variant.images) && variant.images.length > 0,
                 imagesCount: Array.isArray(variant.images) ? variant.images.length : 0,
                 hasHeroImage: !!variant.heroImage,
                 hasSingleImage: !!variant.image
             });
-            
-            
+
+
             if (variant.images && Array.isArray(variant.images) && variant.images.length > 0) {
                 for (const img of variant.images) {
                     if (img) {
@@ -193,7 +193,7 @@ export const createProduct = async (req, res) => {
                             const imagePath = saveBase64Image(img);
                             imagePaths.push(imagePath);
                             console.log('Saved image:', imagePath);
-                            
+
                             if (!heroImagePath) {
                                 heroImagePath = imagePath;
                             }
@@ -203,7 +203,7 @@ export const createProduct = async (req, res) => {
                     }
                 }
             }
-            
+
             else if (variant.image) {
                 try {
                     heroImagePath = saveBase64Image(variant.image);
@@ -218,8 +218,8 @@ export const createProduct = async (req, res) => {
                     });
                 }
             }
-            
-            
+
+
             if (variant.heroImage && !heroImagePath) {
                 try {
                     heroImagePath = saveBase64Image(variant.heroImage);
@@ -247,7 +247,7 @@ export const createProduct = async (req, res) => {
                 images: imagePaths,
                 heroImage: heroImagePath || ''
             });
-            
+
             await newVariant.save();
             variantsData.push(newVariant);
         }
@@ -409,6 +409,47 @@ export const updateProduct = async (req, res) => {
         res.status(500).json({
             success: false,
             message: 'Error updating product',
+            error: error.message
+        });
+    }
+}
+
+export const deleteProduct = async (req, res) => {
+    try {
+        const { id } = req.params;
+
+        // Find the product
+        const existingProduct = await product.findById(id);
+        if (!existingProduct) {
+            return res.status(404).json({
+                success: false,
+                message: 'Product not found'
+            });
+        }
+
+        // Check if user owns the product
+        if (existingProduct.seller.toString() !== req.user.id) {
+            return res.status(403).json({
+                success: false,
+                message: 'Unauthorized to delete this product'
+            });
+        }
+
+        // Delete all associated variations
+        await variation.deleteMany({ product: id });
+
+        // Delete the product
+        await product.findByIdAndDelete(id);
+
+        res.status(200).json({
+            success: true,
+            message: 'Product deleted successfully'
+        });
+    } catch (error) {
+        console.error('Error deleting product:', error);
+        res.status(500).json({
+            success: false,
+            message: 'Error deleting product',
             error: error.message
         });
     }
